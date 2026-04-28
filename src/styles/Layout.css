@@ -1,0 +1,25 @@
+.header {
+  height: 70px;
+  background: #0f172a;
+  color: #fff;
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 1000;
+}
+
+.sidebar {
+  width: 250px;
+  background: #0f172a;
+  color: #e2e8f0;
+  position: fixed;
+  top: 70px; left: 0; bottom: 0;
+  z-index: 999;
+}
+
+.main {
+  margin-left: 250px; /* space for sidebar */
+  margin-top: 70px;   /* space for header */
+  padding: 20px;
+  min-height: calc(100vh - 70px);
+  background: #f5f7fb;
+}

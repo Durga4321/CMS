@@ -1,0 +1,120 @@
+/* General container styling */
+.user-list,
+.user-details,
+.user-activate-deactivate {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  margin: 20px;
+  font-family: "Segoe UI", Roboto, sans-serif;
+}
+
+/* Headings */
+.user-list h2,
+.user-details h2,
+.user-activate-deactivate h2 {
+  font-size: 22px;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 15px;
+}
+
+/* Filters section for UserList */
+.filters {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 15px;
+}
+
+.filters input,
+.filters select {
+  padding: 8px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 13px;
+  outline: none;
+}
+
+.filters input:focus,
+.filters select:focus {
+  border-color: #6a11cb;
+}
+
+/* Table styling for UserList */
+.user-list table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.user-list th,
+.user-list td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #e5e7eb;
+  font-size: 14px;
+}
+
+.user-list th {
+  background: #f9fafb;
+  color: #374151;
+  font-weight: 600;
+}
+
+.user-list tr:hover {
+  background: #f3f4f6;
+  cursor: pointer;
+}
+
+/* UserDetails fields */
+.user-details p,
+.user-activate-deactivate p {
+  font-size: 14px;
+  color: #374151;
+  margin: 6px 0;
+}
+
+/* Buttons */
+.activate-btn {
+  background-color: #10b981; /* green */
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  margin-top: 15px;
+}
+
+.activate-btn:hover {
+  background-color: #059669; /* darker green */
+}
+
+.deactivate-btn {
+  background-color: #ef4444; /* red */
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  margin-top: 15px;
+}
+
+.deactivate-btn:hover {
+  background-color: #dc2626; /* darker red */
+}
+
+/* Activity list (optional for details) */
+.activity {
+  margin-top: 10px;
+  list-style: none;
+  padding: 0;
+}
+
+.activity li {
+  padding: 8px 0;
+  border-bottom: 1px solid #eee;
+  font-size: 14px;
+  color: #334155;
+}

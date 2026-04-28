@@ -1,0 +1,200 @@
+/* Reset */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Page wrapper */
+.clinic-container {
+  padding: 20px;
+  background: #f9fafb;
+  min-height: 100vh;
+}
+
+/* Headings */
+.clinic-container h2 {
+  font-size: 22px;
+  margin-bottom: 20px;
+  color: #0f172a;
+}
+
+/* ===========================
+   Clinic List (Table)
+   =========================== */
+.clinic-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+  background: #fff;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+.clinic-table th,
+.clinic-table td {
+  padding: 12px 15px;
+  border: 1px solid #e5e7eb;
+  text-align: left;
+}
+
+.clinic-table th {
+  background: #0f172a;
+  color: #fff;
+  font-weight: 600;
+}
+
+.clinic-table tr:nth-child(even) {
+  background: #f3f4f6;
+}
+
+/* Empty state row */
+.clinic-table td[colspan="7"] {
+  text-align: center;
+  color: #64748b;
+  padding: 20px;
+  font-size: 15px;
+}
+
+/* Action buttons */
+.clinic-actions a,
+.clinic-actions button {
+  margin-right: 8px;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 4px;
+  text-decoration: none;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.clinic-actions a {
+  background: #2563eb;
+  color: #fff;
+}
+
+.clinic-actions a:hover {
+  background: #1e40af;
+}
+
+.clinic-actions button {
+  background: #ef4444;
+  color: #fff;
+}
+
+.clinic-actions button:hover {
+  background: #b91c1c;
+}
+
+/* Add Clinic button */
+.add-btn {
+  display: inline-block;
+  margin-bottom: 15px;
+  padding: 8px 14px;
+  background: #2563eb;
+  color: #fff;
+  border-radius: 4px;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.add-btn:hover {
+  background: #1e40af;
+}
+
+/* ===========================
+   Add/Edit Form
+   =========================== */
+.clinic-container.centered {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh; /* full viewport height */
+  background: #f9fafb;
+}
+
+.clinic-form {
+  background: #fff;
+  padding: 25px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  width: 100%;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+}
+
+.clinic-form h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #0f172a;
+}
+
+.clinic-form input,
+.clinic-form select {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 15px;
+}
+
+.clinic-form input:focus,
+.clinic-form select:focus {
+  border-color: #2563eb;
+  outline: none;
+}
+
+.clinic-form button {
+  background: #2563eb;
+  color: #fff;
+  padding: 12px;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.clinic-form button:hover {
+  background: #1e40af;
+}
+
+/* ===========================
+   View Clinic Details
+   =========================== */
+.clinic-details {
+  background: #fff;
+  padding: 25px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.clinic-details p {
+  margin: 8px 0;
+  font-size: 15px;
+  color: #374151;
+}
+
+/* ===========================
+   Responsive
+   =========================== */
+@media (max-width: 768px) {
+  .clinic-table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  .clinic-form {
+    padding: 20px;
+    max-width: 90%;
+  }
+
+  .clinic-details {
+    max-width: 90%;
+  }
+}

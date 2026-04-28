@@ -1,0 +1,100 @@
+/* General container styling */
+.super-box {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  margin: 20px;
+  font-family: "Segoe UI", Roboto, sans-serif;
+}
+
+/* Headings */
+.super-box h2 {
+  font-size: 22px;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 15px;
+}
+
+/* Table styling for Admin List */
+.super-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.super-table th,
+.super-table td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #e5e7eb;
+  font-size: 14px;
+}
+
+.super-table th {
+  background: #f9fafb;
+  color: #374151;
+  font-weight: 600;
+}
+
+.super-table tr:hover {
+  background: #f3f4f6;
+  cursor: pointer;
+}
+
+/* Form grid for Create/Edit Admin */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  margin-bottom: 15px;
+}
+
+.form-grid input {
+  padding: 10px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 14px;
+  outline: none;
+}
+
+.form-grid input:focus {
+  border-color: #6a11cb;
+}
+
+/* Buttons */
+.activate-btn {
+  background-color: #10b981; /* green */
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  margin-top: 10px;
+}
+
+.activate-btn:hover {
+  background-color: #059669; /* darker green */
+}
+
+.deactivate-btn {
+  background-color: #ef4444; /* red */
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  margin-top: 10px;
+}
+
+.deactivate-btn:hover {
+  background-color: #dc2626; /* darker red */
+}
+
+/* Paragraphs for ViewAdmin */
+.super-box p {
+  font-size: 14px;
+  color: #374151;
+  margin: 6px 0;
+}

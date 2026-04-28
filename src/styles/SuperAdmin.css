@@ -1,0 +1,80 @@
+.super-dashboard {
+  padding: 20px;
+  background: linear-gradient(135deg, #f5f7fb, #eef2ff); /* softer clinic theme */
+  min-height: 100vh;
+}
+
+.dashboard-title {
+  font-size: 26px;
+  font-weight: 700;
+  color: #1e293b;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.super-cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.super-card {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  text-align: center;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.super-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+}
+
+.super-card h4 {
+  font-size: 15px;
+  color: #64748b;
+}
+
+.super-card h2 {
+  font-size: 28px;
+  color: #6a11cb; /* clinic theme purple */
+  margin-top: 8px;
+}
+
+.super-row {
+  display: flex;
+  gap: 20px;
+  margin-top: 25px;
+}
+
+.super-box {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  flex: 1;
+}
+
+.super-box h3 {
+  font-size: 18px;
+  color: #1e293b;
+  margin-bottom: 12px;
+  border-bottom: 2px solid #eef2ff;
+  padding-bottom: 6px;
+}
+
+.activity {
+  margin-top: 10px;
+  list-style: none;
+  padding: 0;
+}
+
+.activity li {
+  padding: 8px 0;
+  border-bottom: 1px solid #eee;
+  font-size: 14px;
+  color: #334155;
+}
