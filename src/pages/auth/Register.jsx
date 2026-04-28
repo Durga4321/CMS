@@ -2,7 +2,11 @@ import React, { useState } from "react";
 import api from "../../services/api";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import "../../styles/Register.css";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { AuthLogo } from "../../components/AuthLogo";
+import { AuthWaves } from "../../components/AuthWaves";
+import "react-toastify/dist/ReactToastify.css";
+import "../../styles/auth-new.css";
 
 function Register() {
   const [formData, setFormData] = useState({
@@ -16,8 +20,10 @@ function Register() {
     email: "",
   });
 
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [agreeTerms, setAgreeTerms] = useState(false);
-  const [errors, setErrors] = useState({}); // ✅ track field errors
+  const [errors, setErrors] = useState({});
   const navigate = useNavigate();
 
   const handleChange = (e) =>
@@ -25,7 +31,6 @@ function Register() {
 
   const validateForm = () => {
     const newErrors = {};
-
     if (!formData.firstName) newErrors.firstName = "First name is required";
     if (!formData.lastName) newErrors.lastName = "Last name is required";
     if (!formData.username) newErrors.username = "Username is required";
@@ -55,7 +60,10 @@ function Register() {
       const res = await api.post("/auth/register", formData);
 
       if (res.status === 200 && res.data?.message) {
-        toast.success(res.data.message || "Registration Successful 🎉");
+        toast.success(res.data.message || "Registration Successful 🎉", {
+          position: "top-center",
+          autoClose: 1500,
+        });
         setTimeout(() => navigate("/login"), 1500);
       } else {
         toast.error(res.data?.message || "Registration failed. Try again.");
@@ -63,135 +71,218 @@ function Register() {
     } catch (err) {
       console.error("Registration error:", err.response?.data || err.message);
       toast.error(
-        err.response?.data?.message || "Registration failed. Please check your details."
+        err.response?.data?.message ||
+          "Registration failed. Please check your details."
       );
     }
   };
 
   return (
-    <div className="super-admin-auth-wrapper">
-      <div className="super-admin-register-card">
-        <h2 className="super-admin-title">Register</h2>
-
-        <div className="super-admin-form-grid">
-          {/* Example field with inline error */}
-          <div className="super-admin-form-group">
-            <label>First Name</label>
-            <input
-              name="firstName"
-              placeholder="John"
-              onChange={handleChange}
-              className={errors.firstName ? "error-input" : ""}
-            />
-            {errors.firstName && <small className="error-text">{errors.firstName}</small>}
-          </div>
-
-          <div className="super-admin-form-group">
-            <label>Last Name</label>
-            <input
-              name="lastName"
-              placeholder="Doe"
-              onChange={handleChange}
-              className={errors.lastName ? "error-input" : ""}
-            />
-            {errors.lastName && <small className="error-text">{errors.lastName}</small>}
-          </div>
-
-          <div className="super-admin-form-group">
-            <label>Username</label>
-            <input
-              name="username"
-              placeholder="johndoe"
-              onChange={handleChange}
-              className={errors.username ? "error-input" : ""}
-            />
-            {errors.username && <small className="error-text">{errors.username}</small>}
-          </div>
-
-          <div className="super-admin-form-group">
-            <label>Password</label>
-            <input
-              type="password"
-              name="password"
-              placeholder="Password"
-              onChange={handleChange}
-              className={errors.password ? "error-input" : ""}
-            />
-            {errors.password && <small className="error-text">{errors.password}</small>}
-          </div>
-
-          <div className="super-admin-form-group">
-            <label>Confirm Password</label>
-            <input
-              type="password"
-              name="confirmPassword"
-              placeholder="Confirm Password"
-              onChange={handleChange}
-              className={errors.confirmPassword ? "error-input" : ""}
-            />
-            {errors.confirmPassword && (
-              <small className="error-text">{errors.confirmPassword}</small>
-            )}
-          </div>
-
-          <div className="super-admin-form-group">
-            <label>Role</label>
-            <select
-              name="role"
-              onChange={handleChange}
-              className={errors.role ? "error-input" : ""}
-            >
-              <option value="">Select Role</option>
-              <option>Admin</option>
-              <option>Doctor</option>
-              <option>Receptionist</option>
-              <option>Patient</option>
-            </select>
-            {errors.role && <small className="error-text">{errors.role}</small>}
-          </div>
-
-          <div className="super-admin-form-group">
-            <label>Phone</label>
-            <input
-              name="phone"
-              placeholder="Phone"
-              onChange={handleChange}
-              className={errors.phone ? "error-input" : ""}
-            />
-            {errors.phone && <small className="error-text">{errors.phone}</small>}
-          </div>
-
-          <div className="super-admin-form-group">
-            <label>Email</label>
-            <input
-              type="email"
-              name="email"
-              placeholder="Email"
-              onChange={handleChange}
-              className={errors.email ? "error-input" : ""}
-            />
-            {errors.email && <small className="error-text">{errors.email}</small>}
+    <div className="auth-page">
+      <div className="auth-shell">
+        {/* Hero Section */}
+        <div className="auth-hero">
+          <div className="auth-hero-base" />
+          <div className="auth-hero-inner">
+            <div className="auth-welcome">
+              Build Your
+              <br />
+              Care Team
+            </div>
+            <div className="auth-brand">
+              <AuthLogo />
+              <div className="auth-brand-copy">
+                <h1>Clinical</h1>
+                <h2>Management System</h2>
+              </div>
+            </div>
+            <AuthWaves />
           </div>
         </div>
 
-        <div className="super-admin-terms">
-          <input
-            type="checkbox"
-            checked={agreeTerms}
-            onChange={(e) => setAgreeTerms(e.target.checked)}
-          />{" "}
-          <span>I agree terms & conditions</span>
-          {errors.terms && <small className="error-text">{errors.terms}</small>}
+        {/* Register Panel */}
+        <div className="auth-panel">
+          <div className="auth-form-card auth-form-card-wide">
+            <div className="auth-form-header">
+              <h2>Register</h2>
+              <p>
+                Create a new account to access the dashboard and manage your
+                workspace.
+              </p>
+            </div>
+
+            <div className="auth-form-grid auth-form-grid-two">
+              {/* First Name */}
+              <div className="auth-form-group">
+                <label>First Name</label>
+                <input
+                  name="firstName"
+                  placeholder="John"
+                  value={formData.firstName}
+                  onChange={handleChange}
+                  className={errors.firstName ? "auth-input-error" : ""}
+                />
+                {errors.firstName && (
+                  <div className="auth-field-error">{errors.firstName}</div>
+                )}
+              </div>
+
+              {/* Last Name */}
+              <div className="auth-form-group">
+                <label>Last Name</label>
+                <input
+                  name="lastName"
+                  placeholder="Doe"
+                  value={formData.lastName}
+                  onChange={handleChange}
+                  className={errors.lastName ? "auth-input-error" : ""}
+                />
+                {errors.lastName && (
+                  <div className="auth-field-error">{errors.lastName}</div>
+                )}
+              </div>
+
+              {/* Username */}
+              <div className="auth-form-group">
+                <label>Username</label>
+                <input
+                  name="username"
+                  placeholder="johndoe"
+                  value={formData.username}
+                  onChange={handleChange}
+                  className={errors.username ? "auth-input-error" : ""}
+                />
+                {errors.username && (
+                  <div className="auth-field-error">{errors.username}</div>
+                )}
+              </div>
+
+              {/* Role */}
+              <div className="auth-form-group">
+                <label>Role</label>
+                <select
+                  name="role"
+                  value={formData.role}
+                  onChange={handleChange}
+                  className={errors.role ? "auth-input-error" : ""}
+                >
+                  <option value="">Select Role</option>
+                  <option value="Admin">Admin</option>
+                  <option value="Doctor">Doctor</option>
+                  <option value="Receptionist">Receptionist</option>
+                  <option value="Patient">Patient</option>
+                </select>
+                {errors.role && (
+                  <div className="auth-field-error">{errors.role}</div>
+                )}
+              </div>
+
+              {/* Phone */}
+              <div className="auth-form-group">
+                <label>Phone</label>
+                <input
+                  name="phone"
+                  placeholder="Phone number"
+                  value={formData.phone}
+                  onChange={handleChange}
+                  className={errors.phone ? "auth-input-error" : ""}
+                />
+                {errors.phone && (
+                  <div className="auth-field-error">{errors.phone}</div>
+                )}
+              </div>
+
+              {/* Email */}
+              <div className="auth-form-group">
+                <label>Email</label>
+                <input
+                  type="email"
+                  name="email"
+                  placeholder="Enter your email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  className={errors.email ? "auth-input-error" : ""}
+                />
+                {errors.email && (
+                  <div className="auth-field-error">{errors.email}</div>
+                )}
+              </div>
+
+              {/* Password */}
+              <div className="auth-form-group">
+                <label>Password</label>
+                <input
+                  type={showPassword ? "text" : "password"}
+                  name="password"
+                  placeholder="Create password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  className={errors.password ? "auth-input-error" : ""}
+                  style={{ paddingRight: 40 }}
+                />
+                <span
+                  className="auth-password-toggle"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? <FaEyeSlash /> : <FaEye />}
+                </span>
+                {errors.password && (
+                  <div className="auth-field-error">{errors.password}</div>
+                )}
+              </div>
+
+              {/* Confirm Password */}
+              <div className="auth-form-group">
+                <label>Confirm Password</label>
+                <input
+                  type={showConfirmPassword ? "text" : "password"}
+                  name="confirmPassword"
+                  placeholder="Confirm password"
+                  value={formData.confirmPassword}
+                  onChange={handleChange}
+                  className={errors.confirmPassword ? "auth-input-error" : ""}
+                  style={{ paddingRight: 40 }}
+                />
+                <span
+                  className="auth-password-toggle"
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                >
+                  {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+                </span>
+                {errors.confirmPassword && (
+                  <div className="auth-field-error">
+                    {errors.confirmPassword}
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Terms */}
+            <div className="auth-form-options">
+              <label className="auth-check">
+                <input
+                  type="checkbox"
+                  checked={agreeTerms}
+                  onChange={(e) => setAgreeTerms(e.target.checked)}
+                />
+                I agree terms & conditions
+              </label>
+              {errors.terms && (
+                <div className="auth-field-error">{errors.terms}</div>
+              )}
+            </div>
+
+            {/* Submit Button */}
+            <button className="auth-btn" onClick={handleRegister}>
+              Register
+             </button>
+
+            <p className="auth-bottom-text">
+              Already have account?
+              <span onClick={() => navigate("/login")}>Login</span>
+            </p>
+          </div>
         </div>
-
-        <button className="super-admin-register-btn" onClick={handleRegister}>
-          Register
-        </button>
-
-        <p className="super-admin-bottom-text">
-          Already have account?{" "}
-          <span onClick={() => navigate("/login")}>Login</span>
-        </p>
       </div>
     </div>
   );

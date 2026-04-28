@@ -1,8 +1,18 @@
 import { Navigate, Outlet } from "react-router-dom";
 
-const ProtectedRoute = () => {
+const ProtectedRoute = ({ allowedRoles }) => {
   const token = localStorage.getItem("authToken");
-  return token ? <Outlet /> : <Navigate to="/login" replace />;
+  const role = localStorage.getItem("role");
+
+  if (!token) {
+    return <Navigate to="/login" replace />;
+  }
+
+  if (allowedRoles && !allowedRoles.includes(role)) {
+    return <Navigate to="/unauthorized" replace />;
+  }
+
+  return <Outlet />;
 };
 
 export default ProtectedRoute;

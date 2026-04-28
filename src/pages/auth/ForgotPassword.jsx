@@ -1,63 +1,107 @@
 import React, { useState } from "react";
-import "../../styles/Auth.css";
 import { useNavigate } from "react-router-dom";
-import api from "../../services/api";   // axios instance
+import { AuthLogo } from "../../components/AuthLogo";
+import { AuthWaves } from "../../components/AuthWaves";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import "../../styles/auth-new.css";
+import api from "../../services/api";
 
 function ForgotPassword() {
   const [email, setEmail] = useState("");
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
+  const [fieldErrors, setFieldErrors] = useState({});
   const navigate = useNavigate();
 
-  const handleSubmit = async () => {
+  const validateForm = () => {
+    const errors = {};
     if (!email) {
-      setError("Please enter email");
-      return;
+      errors.email = "Email is required";
+    } else if (!/\S+@\S+\.\S+/.test(email)) {
+      errors.email = "Enter a valid email address";
     }
-    if (!/\S+@\S+\.\S+/.test(email)) {
-      setError("Invalid email format");
-      return;
-    }
+    setFieldErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
 
-    setError("");
-    setSuccess("");
+  const handleSubmit = async () => {
+    if (!validateForm()) {
+      toast.error("Please fix the highlighted errors");
+      return;
+    }
 
     try {
       const res = await api.post("/auth/forgot-password", { email });
       if (res.status === 200 && res.data?.message) {
-        setSuccess(res.data.message);
+        toast.success(res.data.message, { position: "top-center", autoClose: 1500 });
         navigate("/reset-password", { state: { email } });
       } else {
-        setError(res.data?.message || "Failed to send OTP. Try again.");
+        toast.error(res.data?.message || "Failed to send OTP. Try again.");
       }
     } catch (err) {
-      setError(err.response?.data?.message || "Failed to send OTP. Try again.");
+      toast.error(err.response?.data?.message || "Failed to send OTP. Try again.");
     }
   };
 
   return (
-    <div className="super-admin-auth-container">
-      <div className="super-admin-auth-card">
-        <h2>Forgot Password</h2>
-        <p>Enter your registered email to receive OTP</p>
-        {error && <p className="super-admin-error-text">{error}</p>}
-        {success && <p className="super-admin-success-text">{success}</p>}
+    <div className="auth-page">
+      <div className="auth-shell auth-shell-compact">
+        {/* Hero Section */}
+        <div className="auth-hero auth-hero-compact">
+          <div className="auth-hero-base" />
+          <div className="auth-hero-inner">
+            <div className="auth-welcome">
+              Recover
+              <br />
+              Clinic Access
+            </div>
+            <div className="auth-brand">
+              <AuthLogo />
+              <div className="auth-brand-copy">
+                <h1>Clinical</h1>
+                <h2>Management System</h2>
+              </div>
+            </div>
+            <AuthWaves />
+          </div>
+        </div>
 
-        <input
-          type="email"
-          placeholder="Enter Email"
-          className="super-admin-auth-input"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
+        {/* Forgot Password Panel */}
+        <div className="auth-panel auth-panel-compact">
+          <div className="auth-form-card auth-form-card-compact">
+            <div className="auth-form-header">
+              <h2>Forgot Password</h2>
+              <p>Enter your registered email to receive OTP.</p>
+            </div>
 
-        <button className="super-admin-auth-btn" onClick={handleSubmit}>
-          Send OTP
-        </button>
+            <div className="auth-form-grid">
+              <div className="auth-form-group">
+                <label>Email</label>
+                <input
+                  type="email"
+                  className={fieldErrors.email ? "auth-input-error" : ""}
+                  placeholder="Enter your email"
+                  value={email}
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                    setFieldErrors((prev) => ({ ...prev, email: "" }));
+                  }}
+                />
+                {fieldErrors.email && (
+                  <div className="auth-field-error">{fieldErrors.email}</div>
+                )}
+              </div>
+            </div>
 
-        <p className="super-admin-bottom-text">
-          <span onClick={() => navigate("/login")}>Back to Login</span>
-        </p>
+            <button className="auth-btn auth-btn-spaced" onClick={handleSubmit}>
+              Send OTP
+            </button>
+
+            <p className="auth-bottom-text">
+              Remembered your password?{" "}
+              <span onClick={() => navigate("/login")}>Back to Login</span>
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   );

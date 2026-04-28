@@ -1,43 +1,43 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { FcGoogle } from "react-icons/fc";
+import { AuthLogo } from "../../components/AuthLogo";
+import { AuthWaves } from "../../components/AuthWaves";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import "../../styles/Login.css";
+import "../../styles/auth-new.css";
 import api from "../../services/api";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState("");
-  const [emailError, setEmailError] = useState("");
-  const [passwordError, setPasswordError] = useState("");
+  const [fieldErrors, setFieldErrors] = useState({});
   const navigate = useNavigate();
 
-  const handleLogin = async () => {
-    let valid = true;
-
-    setEmailError("");
-    setPasswordError("");
-    setError("");
-
+  const validateForm = () => {
+    const errors = {};
     if (!email) {
-      setEmailError("Email is required");
-      valid = false;
+      errors.email = "Email is required";
+    } else if (!/\S+@\S+\.\S+/.test(email)) {
+      errors.email = "Enter a valid email address";
     }
     if (!password) {
-      setPasswordError("Password is required");
-      valid = false;
+      errors.password = "Password is required";
+    }
+    return errors;
+  };
+
+  const handleLogin = async () => {
+    const errors = validateForm();
+    if (Object.keys(errors).length > 0) {
+      setFieldErrors(errors);
+      return;
     }
 
-    if (!valid) return;
-
     try {
-      const res = await api.post("/auth/login", {
-        email: email,
-        password: password,
-      });
+      const res = await api.post("/auth/login", { email, password });
 
       if (res.status === 200 && res.data?.token) {
         localStorage.setItem("authToken", res.data.token);
@@ -49,17 +49,22 @@ function Login() {
           autoClose: 1000,
         });
 
-        setError("");
-        setTimeout(() => navigate("/super-admin-dashboard"), 2000);
+        setFieldErrors({});
+        // ✅ Always navigate to Super Admin Dashboard
+        navigate("/super-admin-dashboard");
       } else {
-        setError("Login failed. Try again.");
-        toast.error("Login failed. Try again.", {
+        setFieldErrors({
+          password: res.data?.message || "Login failed. Try again.",
+        });
+        toast.error(res.data?.message || "Login failed. Try again.", {
           position: "top-center",
           autoClose: 1000,
         });
       }
     } catch (err) {
-      setError(err.response?.data?.message || "Login failed. Try again.");
+      setFieldErrors({
+        password: err.response?.data?.message || "Login failed. Try again.",
+      });
       toast.error(err.response?.data?.message || "Login failed. Try again.", {
         position: "top-center",
         autoClose: 1000,
@@ -68,71 +73,111 @@ function Login() {
   };
 
   return (
-    <div className="super-admin-login-wrapper">
-      <div className="super-admin-login-card">
-        <h2 className="super-admin-login-title">CMS</h2>
-        {error && <p className="super-admin-error-text">{error}</p>}
-
-        <div className="super-admin-form-group">
-          <label>Email*</label>
-          {emailError && <span className="super-admin-error-text">{emailError}</span>}
-          <div className="super-admin-input-box">
-            <input
-              type="email"
-              placeholder="Enter your email"
-              value={email}
-              onChange={(e) => {
-                setEmail(e.target.value);
-                if (e.target.value) setEmailError("");
-              }}
-            />
+    <div className="auth-page">
+      <div className="auth-shell">
+        <div className="auth-hero">
+          <div className="auth-hero-base" />
+          <div className="auth-hero-inner">
+            <div className="auth-welcome">
+              Welcome to
+              <br />
+              Your Clinic
+            </div>
+            <div className="auth-brand">
+              <AuthLogo />
+              <div className="auth-brand-copy">
+                <h1>Clinical</h1>
+                <h2>Management System</h2>
+              </div>
+            </div>
+            <AuthWaves />
           </div>
         </div>
 
-        <div className="super-admin-form-group">
-          <label>Password*</label>
-          {passwordError && (
-            <span className="super-admin-error-text">{passwordError}</span>
-          )}
-          <div className="super-admin-input-box">
-            <input
-              type={showPassword ? "text" : "password"}
-              placeholder="Password"
-              value={password}
-              onChange={(e) => {
-                setPassword(e.target.value);
-                if (e.target.value) setPasswordError("");
-              }}
-            />
-            <span
-              className="super-admin-eye-icon"
-              onClick={() => setShowPassword(!showPassword)}
-            >
-              {showPassword ? <FaEyeSlash /> : <FaEye />}
-            </span>
+        <div className="auth-panel">
+          <div className="auth-form-card auth-form-card-login">
+            <div className="auth-form-header">
+              <h2>Admin Login</h2>
+              <p>
+                Access the admin panel to manage users, roles, and system
+                settings.
+              </p>
+            </div>
+
+            <button className="auth-google-btn" type="button">
+              <FcGoogle size={20} />
+              Sign in with Google
+            </button>
+
+            <div className="auth-divider">Or Sign in with Email</div>
+            <div className="auth-form-grid">
+              <div className="auth-form-group">
+                <label>Email</label>
+                <input
+                  type="email"
+                  className={fieldErrors.email ? "auth-input-error" : ""}
+                  placeholder="Enter your email"
+                  value={email}
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                    setFieldErrors((prev) => ({ ...prev, email: "" }));
+                  }}
+                />
+                {fieldErrors.email && (
+                  <div className="auth-field-error">{fieldErrors.email}</div>
+                )}
+              </div>
+
+              <div className="auth-form-group">
+                <label>Password</label>
+                <input
+                  type={showPassword ? "text" : "password"}
+                  className={fieldErrors.password ? "auth-input-error" : ""}
+                  placeholder="Enter your password"
+                  value={password}
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                    setFieldErrors((prev) => ({ ...prev, password: "" }));
+                  }}
+                  style={{ paddingRight: 40 }}
+                />
+                <span
+                  className="auth-password-toggle"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? <FaEyeSlash /> : <FaEye />}
+                </span>
+                {fieldErrors.password && (
+                  <div className="auth-field-error">{fieldErrors.password}</div>
+                )}
+              </div>
+            </div>
+
+            <div className="auth-form-options">
+              <label className="auth-check">
+                <input type="checkbox" />
+                Remember me
+              </label>
+              <span
+                className="auth-link"
+                onClick={() => navigate("/forgot-password")}
+              >
+                Forgot Password?
+              </span>
+            </div>
+
+            <button className="auth-btn" onClick={handleLogin}>
+              Login
+            </button>
+
+            <div className="auth-bottom-text">
+              Not register yet ?
+              <span onClick={() => navigate("/register")}>
+                Create an Account
+              </span>
+            </div>
           </div>
         </div>
-
-        <div className="super-admin-form-options">
-          <label>
-            <input type="checkbox" /> Remember Me
-          </label>
-          <span
-            className="super-admin-forgot"
-            onClick={() => navigate("/forgot-password")}
-          >
-            Forgot Password?
-          </span>
-        </div>
-
-        <button className="super-admin-login-btn" onClick={handleLogin}>
-          Login
-        </button>
-
-        <p className="super-admin-bottom-text">
-          Don't have account?
-          <span onClick={() => navigate("/register")}> Sign Up</span>
-        </p>
       </div>
     </div>
   );
