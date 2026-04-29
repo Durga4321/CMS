@@ -4,10 +4,15 @@ import "../styles/Header.css";
 
 function Header() {
   const [openDropdown, setOpenDropdown] = useState(null);
+  const [profileOpen, setProfileOpen] = useState(false);
   const navigate = useNavigate();
 
   const toggleDropdown = (menu) => {
     setOpenDropdown(openDropdown === menu ? null : menu);
+  };
+
+  const toggleProfile = () => {
+    setProfileOpen(!profileOpen);
   };
 
   const handleLogout = () => {
@@ -17,7 +22,9 @@ function Header() {
     navigate("/login");
   };
 
-  const isLoggedIn = localStorage.getItem("authToken"); // ✅ check token
+  const isLoggedIn = localStorage.getItem("authToken");
+  const role = localStorage.getItem("role") || "Guest";
+  const name = localStorage.getItem("name") || "User";
 
   return (
     <header className="header">
@@ -82,7 +89,29 @@ function Header() {
 
       <div className="header-actions">
         {isLoggedIn ? (
-          <button className="logout-btn" onClick={handleLogout}>Logout</button>
+          <div className="profile-dropdown">
+            <div className="profile-btn" onClick={toggleProfile}>
+              <div className="profile-avatar">
+                {name.charAt(0).toUpperCase()}
+              </div>
+              <div className="profile-text">
+                <span className="profile-name">{name}</span>
+                <span className="profile-role">{role}</span>
+              </div>
+              <span className="profile-arrow">▾</span>
+            </div>
+            {profileOpen && (
+              <div className="profile-content">
+                <div className="profile-info">
+                  <strong>{name}</strong>
+                  <small>{role}</small>
+                </div>
+                <button className="logout-btn" onClick={handleLogout}>
+                  Logout
+                </button>
+              </div>
+            )}
+          </div>
         ) : (
           <>
             <Link to="/login" className="login-btn">Login</Link>

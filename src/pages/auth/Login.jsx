@@ -37,7 +37,15 @@ function Login() {
     }
 
     try {
-      const res = await api.post("/auth/login", { email, password });
+      let res;
+
+      // ✅ If Super Admin, call dedicated endpoint
+      if (email === "superadmin@gmail.com") {
+        res = await api.post("/auth/super-admin-login", { email, password });
+      } else {
+        // ✅ Other roles use normal login
+        res = await api.post("/auth/login", { email, password });
+      }
 
       if (res.status === 200 && res.data?.token) {
         localStorage.setItem("authToken", res.data.token);
@@ -50,8 +58,30 @@ function Login() {
         });
 
         setFieldErrors({});
-        // ✅ Always navigate to Super Admin Dashboard
-        navigate("/super-admin-dashboard");
+
+        // ✅ Navigate based on role
+        switch (res.data.role) {
+          case "SuperAdmin":
+            navigate("/super-admin-dashboard");
+            break;
+          case "Admin":
+            navigate("/admin-dashboard");
+            break;
+          case "Doctor":
+            navigate("/doctor-dashboard");
+            break;
+          case "Receptionist":
+            navigate("/receptionist-dashboard");
+            break;
+          case "Patient":
+            navigate("/patient-dashboard");
+            break;
+          default:
+            toast.error("Unknown role. Contact support.", {
+              position: "top-center",
+              autoClose: 2000,
+            });
+        }
       } else {
         setFieldErrors({
           password: res.data?.message || "Login failed. Try again.",
