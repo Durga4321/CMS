@@ -11,11 +11,11 @@ class SuperAdminDashboard extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      summary: {},
-      revenueData: [],
-      clinicData: [],
-      doctorDistribution: [],
-      activities: [],
+      summary: {},                // always an object
+      revenueData: [],            // always an array
+      clinicData: [],             // always an array
+      doctorDistribution: [],     // always an array
+      activities: [],             // always an array
       loading: true,
       error: "",
       COLORS: ["#2563eb", "#10b981", "#f59e0b", "#ef4444"]
@@ -24,8 +24,8 @@ class SuperAdminDashboard extends Component {
 
   async componentDidMount() {
     try {
-      const token = localStorage.getItem("authToken");
-      api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+      const token = localStorage.getItem("authToken") || "";
+      api.defaults.headers.common["Authorization"] = token ? `Bearer ${token}` : "";
 
       const [summaryRes, revenueRes, activitiesRes, clinicsRes, doctorsRes] =
         await Promise.all([
@@ -38,18 +38,38 @@ class SuperAdminDashboard extends Component {
 
       this.setState({
         summary: summaryRes.data || {},
-        revenueData: Array.isArray(revenueRes.data) ? revenueRes.data : revenueRes.data.data || [],
-        activities: Array.isArray(activitiesRes.data) ? activitiesRes.data : activitiesRes.data.data || [],
-        clinicData: (Array.isArray(clinicsRes.data) ? clinicsRes.data : clinicsRes.data.data || []).map((c, idx) => ({
-          month: `M${idx + 1}`,
-          clinics: idx + 1,
-        })),
-        doctorDistribution: [
-          { name: "General", value: 120 },
-          { name: "Specialists", value: 80 },
-          { name: "Surgeons", value: 60 },
-          { name: "Others", value: 96 },
-        ],
+        revenueData: Array.isArray(revenueRes.data?.data)
+          ? revenueRes.data.data
+          : Array.isArray(revenueRes.data)
+            ? revenueRes.data
+            : [],
+        activities: Array.isArray(activitiesRes.data?.data)
+          ? activitiesRes.data.data
+          : Array.isArray(activitiesRes.data)
+            ? activitiesRes.data
+            : [],
+        clinicData: Array.isArray(clinicsRes.data?.data)
+          ? clinicsRes.data.data.map((c, idx) => ({
+              month: c.monthName || `M${idx + 1}`,
+              clinics: c.count || idx + 1,
+            }))
+          : Array.isArray(clinicsRes.data)
+            ? clinicsRes.data.map((c, idx) => ({
+                month: c.monthName || `M${idx + 1}`,
+                clinics: c.count || idx + 1,
+              }))
+            : [],
+        doctorDistribution: Array.isArray(doctorsRes.data?.data)
+          ? doctorsRes.data.data.map(d => ({
+              name: d.specialization || "Unknown",
+              value: d.count || 0,
+            }))
+          : Array.isArray(doctorsRes.data)
+            ? doctorsRes.data.map(d => ({
+                name: d.specialization || "Unknown",
+                value: d.count || 0,
+              }))
+            : [],
         loading: false,
       });
     } catch (err) {
@@ -119,7 +139,6 @@ class SuperAdminDashboard extends Component {
                   cx="50%"
                   cy="50%"
                   outerRadius={80}
-                  fill="#8884d8"
                   dataKey="value"
                   label
                 >

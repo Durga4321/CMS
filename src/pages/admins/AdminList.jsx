@@ -4,14 +4,37 @@ import { useNavigate } from "react-router-dom";
 import "../../styles/admin.css";
 
 function AdminList() {
-  const [admins, setAdmins] = useState([]);
+  const [admins, setAdmins] = useState([]);   // always an array
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
     axios.get("/api/admins")
-      .then(res => setAdmins(res.data))
-      .catch(err => console.error("Error fetching admins:", err));
+      .then(res => {
+        // Handle both array and object response shapes
+        const data = Array.isArray(res.data)
+          ? res.data
+          : Array.isArray(res.data?.data)
+            ? res.data.data
+            : [];
+        setAdmins(data);
+        setLoading(false);
+      })
+      .catch(err => {
+        console.error("Error fetching admins:", err);
+        setError("Failed to load admins");
+        setLoading(false);
+      });
   }, []);
+
+  if (loading) {
+    return <div className="super-loading">Loading admins...</div>;
+  }
+
+  if (error) {
+    return <div className="super-error">{error}</div>;
+  }
 
   return (
     <div className="super-box">
@@ -23,17 +46,31 @@ function AdminList() {
           </tr>
         </thead>
         <tbody>
-          {admins.map(admin => (
-            <tr key={admin.id} onClick={() => navigate(`/view-admin/${admin.id}`)}>
-              <td>{admin.name}</td>
-              <td>{admin.email}</td>
-              <td>{admin.clinic}</td>
-              <td>{admin.status}</td>
+          {Array.isArray(admins) && admins.length > 0 ? (
+            admins.map(admin => (
+              <tr
+                key={admin.id}
+                onClick={() => navigate(`/view-admin/${admin.id}`)}
+              >
+                <td>{admin.name}</td>
+                <td>{admin.email}</td>
+                <td>{admin.clinic}</td>
+                <td>{admin.status}</td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan="4" style={{ textAlign: "center" }}>
+                No admins found
+              </td>
             </tr>
-          ))}
+          )}
         </tbody>
       </table>
-      <button className="activate-btn" onClick={() => navigate("/create-admin")}>
+      <button
+        className="activate-btn"
+        onClick={() => navigate("/create-admin")}
+      >
         + Create Admin
       </button>
     </div>

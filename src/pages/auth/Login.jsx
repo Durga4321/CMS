@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import { FcGoogle } from "react-icons/fc";
 import { AuthLogo } from "../../components/AuthLogo";
 import { AuthWaves } from "../../components/AuthWaves";
 import { toast } from "react-toastify";
@@ -13,8 +12,22 @@ function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
   const [fieldErrors, setFieldErrors] = useState({});
   const navigate = useNavigate();
+
+  // ✅ On mount, check if credentials were saved
+  useEffect(() => {
+    const savedEmail = localStorage.getItem("rememberEmail");
+    const savedPassword = localStorage.getItem("rememberPassword");
+    if (savedEmail) {
+      setEmail(savedEmail);
+      setRememberMe(true);
+    }
+    if (savedPassword) {
+      setPassword(savedPassword);
+    }
+  }, []);
 
   const validateForm = () => {
     const errors = {};
@@ -39,11 +52,9 @@ function Login() {
     try {
       let res;
 
-      // ✅ If Super Admin, call dedicated endpoint
       if (email === "superadmin@gmail.com") {
         res = await api.post("/auth/super-admin-login", { email, password });
       } else {
-        // ✅ Other roles use normal login
         res = await api.post("/auth/login", { email, password });
       }
 
@@ -52,6 +63,15 @@ function Login() {
         localStorage.setItem("role", res.data.role);
         localStorage.setItem("name", res.data.name);
 
+        // ✅ Save credentials if Remember Me is checked
+        if (rememberMe) {
+          localStorage.setItem("rememberEmail", email);
+          localStorage.setItem("rememberPassword", password);
+        } else {
+          localStorage.removeItem("rememberEmail");
+          localStorage.removeItem("rememberPassword");
+        }
+
         toast.success("Login successful!", {
           position: "top-center",
           autoClose: 1000,
@@ -59,7 +79,6 @@ function Login() {
 
         setFieldErrors({});
 
-        // ✅ Navigate based on role
         switch (res.data.role) {
           case "SuperAdmin":
             navigate("/super-admin-dashboard");
@@ -127,19 +146,13 @@ function Login() {
         <div className="auth-panel">
           <div className="auth-form-card auth-form-card-login">
             <div className="auth-form-header">
-              <h2>Admin Login</h2>
+              <h2>CMS Login</h2>
               <p>
-                Access the admin panel to manage users, roles, and system
+                Access the cms panel to manage users, roles, and system
                 settings.
               </p>
             </div>
 
-            <button className="auth-google-btn" type="button">
-              <FcGoogle size={20} />
-              Sign in with Google
-            </button>
-
-            <div className="auth-divider">Or Sign in with Email</div>
             <div className="auth-form-grid">
               <div className="auth-form-group">
                 <label>Email</label>
@@ -185,7 +198,11 @@ function Login() {
 
             <div className="auth-form-options">
               <label className="auth-check">
-                <input type="checkbox" />
+                <input
+                  type="checkbox"
+                  checked={rememberMe}
+                  onChange={(e) => setRememberMe(e.target.checked)}
+                />
                 Remember me
               </label>
               <span

@@ -3,23 +3,42 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 function UserList() {
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState([]);   // always an array
   const [search, setSearch] = useState("");
   const [roleFilter, setRoleFilter] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
     axios.get("/api/users")
-      .then(res => setUsers(res.data))
-      .catch(err => console.error("Error fetching users:", err));
+      .then(res => {
+        const data = Array.isArray(res.data)
+          ? res.data
+          : Array.isArray(res.data?.data)
+            ? res.data.data
+            : [];
+        setUsers(data);
+        setLoading(false);
+      })
+      .catch(err => {
+        console.error("Error fetching users:", err);
+        setError("Failed to load users");
+        setLoading(false);
+      });
   }, []);
 
-  const filteredUsers = users.filter(u =>
-    u.name.toLowerCase().includes(search.toLowerCase()) &&
-    (roleFilter ? u.role === roleFilter : true) &&
-    (statusFilter ? u.status === statusFilter : true)
-  );
+  const filteredUsers = Array.isArray(users)
+    ? users.filter(u =>
+        u.name?.toLowerCase().includes(search.toLowerCase()) &&
+        (roleFilter ? u.role === roleFilter : true) &&
+        (statusFilter ? u.status === statusFilter : true)
+      )
+    : [];
+
+  if (loading) return <div className="super-loading">Loading users...</div>;
+  if (error) return <div className="super-error">{error}</div>;
 
   return (
     <div className="user-list">
@@ -45,20 +64,28 @@ function UserList() {
         </select>
       </div>
 
-      <table>
+      <table className="super-table">
         <thead>
           <tr>
             <th>Name</th><th>Role</th><th>Status</th>
           </tr>
         </thead>
         <tbody>
-          {filteredUsers.map(user => (
-            <tr key={user.id} onClick={() => navigate(`/user-details/${user.id}`)}>
-              <td>{user.name}</td>
-              <td>{user.role}</td>
-              <td>{user.status}</td>
+          {filteredUsers.length > 0 ? (
+            filteredUsers.map(user => (
+              <tr key={user.id} onClick={() => navigate(`/user-details/${user.id}`)}>
+                <td>{user.name}</td>
+                <td>{user.role}</td>
+                <td>{user.status}</td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan="3" style={{ textAlign: "center" }}>
+                No users found
+              </td>
             </tr>
-          ))}
+          )}
         </tbody>
       </table>
     </div>

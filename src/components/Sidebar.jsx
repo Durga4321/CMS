@@ -28,7 +28,7 @@ function Sidebar() {
         {/* Dashboard */}
         <li>
           <NavLink to="/super-admin-dashboard">
-            <FaTachometerAlt /> Super Admin Dashboard
+            <FaTachometerAlt />   Dashboard
           </NavLink>
         </li>
 
@@ -50,7 +50,7 @@ function Sidebar() {
         {/* Super Admin */}
         <li>
           <div className="menu-title" onClick={() => toggleMenu("admins")}>
-            <FaUsers /> Super Admin <FaChevronDown />
+            <FaUsers />  Admin <FaChevronDown />
           </div>
           {openMenu === "admins" && (
             <ul className="submenu" onClick={(e) => e.stopPropagation()}>
