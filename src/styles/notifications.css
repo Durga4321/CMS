@@ -1,0 +1,78 @@
+.notifications-container {
+  padding: 20px;
+  background: #f9fafb;
+  min-height: 100vh;
+}
+
+.notifications-container h2 {
+  font-size: 24px;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 20px;
+}
+
+.notifications-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+.notifications-table th,
+.notifications-table td {
+  border: 1px solid #e2e8f0;
+  padding: 10px;
+  text-align: left;
+}
+
+.notifications-table th {
+  background: #f1f5f9;
+  font-weight: 600;
+  color: #334155;
+}
+
+.notifications-table tr:hover {
+  background: #f9fafb;
+}
+
+.notifications-btn {
+  background: #2563eb;
+  color: white;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+
+.notifications-btn:hover {
+  background: #1e40af;
+}
+
+.notifications-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 500px;
+}
+
+.notifications-form label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #334155;
+}
+
+.notifications-form input,
+.notifications-form textarea {
+  padding: 10px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+}
+
+.notifications-form textarea {
+  min-height: 100px;
+  resize: vertical;
+}
