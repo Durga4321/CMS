@@ -1,38 +1,78 @@
 import React, { useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "../../styles/admin.css";
+import api from "../../services/api";
 
 function CreateAdmin() {
   const [formData, setFormData] = useState({
-    name: "", email: "", password: "", clinic: "", role: ""
+    name: "",
+    email: "",
+    password: "",
+    clinic: "",
+    role: ""
   });
   const navigate = useNavigate();
 
-  const handleChange = (e) =>
+  const handleChange = e =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
-  const handleSubmit = async () => {
+  const handleSubmit = async e => {
+    e.preventDefault();
+
+    // Basic validation before sending
+    if (!formData.name || !formData.email || !formData.password || !formData.clinic || !formData.role) {
+      alert("All fields are required");
+      return;
+    }
+
     try {
-      await axios.post("/api/admins", formData);
+      const res = await api.post("/admins", formData); // ✅ correct endpoint
+      console.log("Response:", res.data);
       alert("Admin created successfully");
       navigate("/admins");
     } catch (err) {
-      console.error("Error creating admin:", err);
+      console.error("Error creating admin:", err.response?.data || err.message);
+      alert(`Failed to create admin: ${err.response?.data?.message || "Bad Request"}`);
     }
   };
 
   return (
     <div className="super-box">
       <h2>Create Admin</h2>
-      <div className="form-grid">
-        <input name="name" placeholder="Name" onChange={handleChange} />
-        <input name="email" placeholder="Email" onChange={handleChange} />
-        <input type="password" name="password" placeholder="Password" onChange={handleChange} />
-        <input name="clinic" placeholder="Clinic" onChange={handleChange} />
-        <input name="role" placeholder="Role" onChange={handleChange} />
-      </div>
-      <button className="activate-btn" onClick={handleSubmit}>Save</button>
+      <form className="form-grid" onSubmit={handleSubmit}>
+        <input
+          name="name"
+          placeholder="Name"
+          value={formData.name}
+          onChange={handleChange}
+        />
+        <input
+          name="email"
+          placeholder="Email"
+          value={formData.email}
+          onChange={handleChange}
+        />
+        <input
+          type="password"
+          name="password"
+          placeholder="Password"
+          value={formData.password}
+          onChange={handleChange}
+        />
+        <input
+          name="clinic"
+          placeholder="Clinic"
+          value={formData.clinic}
+          onChange={handleChange}
+        />
+        <input
+          name="role"
+          placeholder="Role"
+          value={formData.role}
+          onChange={handleChange}
+        />
+        <button className="activate-btn" type="submit">Save</button>
+      </form>
     </div>
   );
 }

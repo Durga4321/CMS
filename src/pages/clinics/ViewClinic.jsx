@@ -5,13 +5,25 @@ import "../../styles/Clinic.css";
 
 function ViewClinic() {
   const { id } = useParams();
-  const [clinic, setClinic] = useState({});
+  const [clinic, setClinic] = useState(null);
 
   useEffect(() => {
     api.get(`/clinics/${id}`)
-      .then(res => setClinic(res.data))
+      .then(res => {
+        console.log("Fetched clinic:", res.data);
+        setClinic(res.data);
+      })
       .catch(err => console.error("Error fetching clinic:", err));
   }, [id]);
+
+  if (!clinic) {
+    return (
+      <div className="clinic-container">
+        <h2>Clinic Details</h2>
+        <p style={{ textAlign: "center", color: "#64748b" }}>Loading clinic...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="clinic-container">
