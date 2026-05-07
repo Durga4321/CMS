@@ -34,7 +34,6 @@ import UserActivateDeactivate from "./pages/user/UserActivateDeactivate";
 // Roles
 import RolesList from "./pages/roles/RolesList";
 import CreateRole from "./pages/roles/CreateRole";
-import EditRole from "./pages/roles/EditRole";
 import AssignPermissions from "./pages/roles/AssignPermissions";
 
 // Reports
@@ -97,7 +96,6 @@ function App() {
             {/* Roles */}
             <Route path="/roles" element={<RolesList />} />
             <Route path="/create-role" element={<CreateRole />} />
-            <Route path="/edit-role/:id" element={<EditRole />} />
             <Route path="/assign-permission" element={<AssignPermissions />} />
 
             {/* Reports */}

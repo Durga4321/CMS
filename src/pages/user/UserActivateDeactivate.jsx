@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
-import "../../styles/User.css";   // ✅ Import the CSS file
+import api from "../../services/api";
+import "../../styles/user.css";
 
 function UserActivateDeactivate() {
   const { id } = useParams();
@@ -9,20 +9,24 @@ function UserActivateDeactivate() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios.get(`/api/users/${id}`)
-      .then(res => setUser(res.data))
+    api.get(`/users/${id}`)
+      .then(res => {
+        console.log("Fetched user:", res.data);
+        setUser(res.data);
+      })
       .catch(err => console.error("Error fetching user:", err));
   }, [id]);
 
   const toggleStatus = async () => {
     try {
       const newStatus = user.status === "Active" ? "Inactive" : "Active";
-      await axios.put(`/api/users/${id}/status`, { status: newStatus });
+      await api.put(`/users/${id}/status`, { status: newStatus });
       setUser({ ...user, status: newStatus });
       alert(`User ${newStatus} successfully`);
       navigate("/users");
     } catch (err) {
-      console.error("Error updating status:", err);
+      console.error("Error updating status:", err.response?.data || err.message);
+      alert("Failed to update user status");
     }
   };
 

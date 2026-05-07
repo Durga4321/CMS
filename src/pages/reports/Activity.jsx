@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../../services/api";
 import "../../styles/reports.css";
 
 function UserActivity() {
   const [activities, setActivities] = useState([]);
 
   useEffect(() => {
-    axios.get("/api/reports/activity")
-      .then(res => setActivities(Array.isArray(res.data) ? res.data : res.data?.data || []))
+    api.get("/reports/activity")
+      .then(res => {
+        console.log("User activity:", res.data);
+        setActivities(Array.isArray(res.data) ? res.data : []);
+      })
       .catch(err => console.error("Error fetching user activity:", err));
   }, []);
 
@@ -21,13 +24,19 @@ function UserActivity() {
           </tr>
         </thead>
         <tbody>
-          {activities.map((act, idx) => (
-            <tr key={idx}>
-              <td>{act.user}</td>
-              <td>{act.action}</td>
-              <td>{act.date}</td>
+          {activities.length > 0 ? (
+            activities.map((act, idx) => (
+              <tr key={idx}>
+                <td>{act.user}</td>
+                <td>{act.action}</td>
+                <td>{act.date}</td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan="3" style={{ textAlign: "center" }}>No activity found</td>
             </tr>
-          ))}
+          )}
         </tbody>
       </table>
     </div>

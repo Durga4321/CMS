@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import axios from "axios";
+import React, { useState, useEffect } from "react";
+import api from "../../services/api";
 import "../../styles/settings.css";
 
 function GeneralSettings() {
@@ -7,12 +7,23 @@ function GeneralSettings() {
   const [timezone, setTimezone] = useState("");
   const [currency, setCurrency] = useState("");
 
+  useEffect(() => {
+    api.get("/settings")
+      .then(res => {
+        const settings = res.data.general || {};
+        setAppName(settings.appName || "");
+        setTimezone(settings.timezone || "");
+        setCurrency(settings.currency || "");
+      })
+      .catch(err => console.error("Error loading general settings:", err));
+  }, []);
+
   const handleSave = async () => {
     try {
-      await axios.put("/api/settings/general", { appName, timezone, currency });
+      await api.put("/settings/general", { appName, timezone, currency });
       alert("General settings updated system-wide!");
     } catch (err) {
-      console.error("Error saving general settings:", err);
+      console.error("Error saving general settings:", err.response?.data || err.message);
     }
   };
 

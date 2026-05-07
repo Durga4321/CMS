@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
-import "../../styles/user.css"
+import api from "../../services/api";
+import "../../styles/user.css";
 
 function UserDetails() {
   const { id } = useParams();
@@ -9,8 +9,11 @@ function UserDetails() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios.get(`/api/users/${id}`)
-      .then(res => setUser(res.data))
+    api.get(`/users/${id}`)
+      .then(res => {
+        console.log("Fetched user:", res.data);
+        setUser(res.data);
+      })
       .catch(err => console.error("Error fetching user details:", err));
   }, [id]);
 

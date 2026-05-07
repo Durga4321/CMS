@@ -1,17 +1,27 @@
-import React, { useState } from "react";
-import axios from "axios";
+import React, { useState, useEffect } from "react";
+import api from "../../services/api";
 import "../../styles/settings.css";
 
 function SmsSettings() {
   const [provider, setProvider] = useState("");
   const [apiKey, setApiKey] = useState("");
 
+  useEffect(() => {
+    api.get("/settings")
+      .then(res => {
+        const settings = res.data.sms || {};
+        setProvider(settings.provider || "");
+        setApiKey(settings.apiKey || "");
+      })
+      .catch(err => console.error("Error loading SMS settings:", err));
+  }, []);
+
   const handleSave = async () => {
     try {
-      await axios.put("/api/settings/sms", { provider, apiKey });
+      await api.put("/settings/sms", { provider, apiKey });
       alert("SMS settings updated system-wide!");
     } catch (err) {
-      console.error("Error saving SMS settings:", err);
+      console.error("Error saving SMS settings:", err.response?.data || err.message);
     }
   };
 

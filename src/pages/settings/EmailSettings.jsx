@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import axios from "axios";
+import React, { useState, useEffect } from "react";
+import api from "../../services/api";
 import "../../styles/settings.css";
 
 function EmailSettings() {
@@ -8,12 +8,23 @@ function EmailSettings() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
+  useEffect(() => {
+    api.get("/settings")
+      .then(res => {
+        const settings = res.data.email || {};
+        setSmtpServer(settings.smtpServer || "");
+        setPort(settings.port || "");
+        setUsername(settings.username || "");
+      })
+      .catch(err => console.error("Error loading email settings:", err));
+  }, []);
+
   const handleSave = async () => {
     try {
-      await axios.put("/api/settings/email", { smtpServer, port, username, password });
+      await api.put("/settings/email", { smtpServer, port, username, password });
       alert("Email settings updated system-wide!");
     } catch (err) {
-      console.error("Error saving email settings:", err);
+      console.error("Error saving email settings:", err.response?.data || err.message);
     }
   };
 

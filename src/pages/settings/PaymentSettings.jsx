@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import axios from "axios";
+import React, { useState, useEffect } from "react";
+import api from "../../services/api";
 import "../../styles/settings.css";
 
 function PaymentSettings() {
@@ -7,12 +7,22 @@ function PaymentSettings() {
   const [merchantId, setMerchantId] = useState("");
   const [secretKey, setSecretKey] = useState("");
 
+  useEffect(() => {
+    api.get("/settings")
+      .then(res => {
+        const settings = res.data.payment || {};
+        setGateway(settings.gateway || "");
+        setMerchantId(settings.merchantId || "");
+      })
+      .catch(err => console.error("Error loading payment settings:", err));
+  }, []);
+
   const handleSave = async () => {
     try {
-      await axios.put("/api/settings/payment", { gateway, merchantId, secretKey });
+      await api.put("/settings/payment", { gateway, merchantId, secretKey });
       alert("Payment settings updated system-wide!");
     } catch (err) {
-      console.error("Error saving payment settings:", err);
+      console.error("Error saving payment settings:", err.response?.data || err.message);
     }
   };
 

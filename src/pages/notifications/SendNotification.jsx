@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from "axios";
+import api from "../../services/api";   // use configured axios instance
 import "../../styles/notifications.css";
 
 function SendNotification() {
@@ -9,17 +9,20 @@ function SendNotification() {
 
   const handleSend = async () => {
     try {
-      await axios.post("/api/notifications", {
+      const payload = {
         title,
         message,
         targetUsers: targetUsers.split(",").map(u => u.trim())
-      });
+      };
+
+      await api.post("/notifications", payload);   // ✅ backend endpoint
       alert("Notification delivered successfully!");
       setTitle("");
       setMessage("");
       setTargetUsers("");
     } catch (err) {
-      console.error("Error sending notification:", err);
+      console.error("Error sending notification:", err.response?.data || err.message);
+      alert("Failed to send notification");
     }
   };
 
@@ -50,7 +53,9 @@ function SendNotification() {
           placeholder="e.g. Admin, Doctor, Patient"
         />
 
-        <button className="notifications-btn" onClick={handleSend}>Send</button>
+        <button className="notifications-btn" onClick={handleSend}>
+          Send
+        </button>
       </div>
     </div>
   );

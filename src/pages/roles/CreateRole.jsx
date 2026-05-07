@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import api from "../../services/api";
 import "../../styles/roles.css";
 
 function CreateRole() {
@@ -10,10 +10,12 @@ function CreateRole() {
   const handleSave = async () => {
     if (!roleName) return;
     try {
-      await axios.post("/api/roles", { name: roleName });
+      await api.post("/roles", { name: roleName });
+      alert("Role created successfully");
       navigate("/roles");
     } catch (err) {
-      console.error("Error creating role:", err);
+      console.error("Error creating role:", err.response?.data || err.message);
+      alert("Failed to create role");
     }
   };
 

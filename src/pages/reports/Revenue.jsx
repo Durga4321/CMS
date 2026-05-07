@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from "axios";
+import api from "../../services/api";
 import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer
 } from "recharts";
@@ -12,12 +12,13 @@ function RevenueReport() {
 
   const fetchData = async () => {
     try {
-      const res = await axios.get("/api/reports/revenue", {
+      const res = await api.get("/reports/revenue", {
         params: { startDate, endDate }
       });
-      setData(Array.isArray(res.data) ? res.data : res.data?.data || []);
+      console.log("Revenue report:", res.data);
+      setData(Array.isArray(res.data) ? res.data : []);
     } catch (err) {
-      console.error("Error fetching revenue report:", err);
+      console.error("Error fetching revenue report:", err.response?.data || err.message);
     }
   };
 
@@ -51,12 +52,18 @@ function RevenueReport() {
           </tr>
         </thead>
         <tbody>
-          {data.map((row, idx) => (
-            <tr key={idx}>
-              <td>{row.date}</td>
-              <td>{row.revenue}</td>
+          {data.length > 0 ? (
+            data.map((row, idx) => (
+              <tr key={idx}>
+                <td>{row.date}</td>
+                <td>{row.revenue}</td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan="2" style={{ textAlign: "center" }}>No data available</td>
             </tr>
-          ))}
+          )}
         </tbody>
       </table>
     </div>

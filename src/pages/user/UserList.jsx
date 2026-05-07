@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import api from "../../services/api";
+import "../../styles/user.css";
 
 function UserList() {
-  const [users, setUsers] = useState([]);   // always an array
+  const [users, setUsers] = useState([]);
   const [search, setSearch] = useState("");
   const [roleFilter, setRoleFilter] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
@@ -12,14 +13,10 @@ function UserList() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios.get("/api/users")
+    api.get("/users")
       .then(res => {
-        const data = Array.isArray(res.data)
-          ? res.data
-          : Array.isArray(res.data?.data)
-            ? res.data.data
-            : [];
-        setUsers(data);
+        console.log("Fetched users:", res.data);
+        setUsers(Array.isArray(res.data) ? res.data : []);
         setLoading(false);
       })
       .catch(err => {
@@ -29,13 +26,11 @@ function UserList() {
       });
   }, []);
 
-  const filteredUsers = Array.isArray(users)
-    ? users.filter(u =>
-        u.name?.toLowerCase().includes(search.toLowerCase()) &&
-        (roleFilter ? u.role === roleFilter : true) &&
-        (statusFilter ? u.status === statusFilter : true)
-      )
-    : [];
+  const filteredUsers = users.filter(u =>
+    u.name?.toLowerCase().includes(search.toLowerCase()) &&
+    (roleFilter ? u.role === roleFilter : true) &&
+    (statusFilter ? u.status === statusFilter : true)
+  );
 
   if (loading) return <div className="super-loading">Loading users...</div>;
   if (error) return <div className="super-error">{error}</div>;

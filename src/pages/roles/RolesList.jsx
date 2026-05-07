@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import api from "../../services/api";
 import "../../styles/roles.css";
 
 function RoleList() {
@@ -8,8 +8,11 @@ function RoleList() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios.get("/api/roles")
-      .then(res => setRoles(Array.isArray(res.data) ? res.data : res.data?.data || []))
+    api.get("/roles")
+      .then(res => {
+        console.log("Fetched roles:", res.data);
+        setRoles(Array.isArray(res.data) ? res.data : []);
+      })
       .catch(err => console.error("Error fetching roles:", err));
   }, []);
 
@@ -23,12 +26,18 @@ function RoleList() {
           </tr>
         </thead>
         <tbody>
-          {roles.map(role => (
-            <tr key={role.id} onClick={() => navigate(`/assign-permissions/${role.id}`)}>
-              <td>{role.name}</td>
-              <td>{role.permissions?.join(", ")}</td>
+          {roles.length > 0 ? (
+            roles.map(role => (
+              <tr key={role.id} onClick={() => navigate(`/assign-permissions/${role.id}`)}>
+                <td>{role.name}</td>
+                <td>{Array.isArray(role.permissions) ? role.permissions.join(", ") : ""}</td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan="2" style={{ textAlign: "center" }}>No roles found</td>
             </tr>
-          ))}
+          )}
         </tbody>
       </table>
       <button className="roles-btn" onClick={() => navigate("/create-role")}>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import axios from "axios";
+import api from "../../services/api";
 import "../../styles/roles.css";
 
 function AssignPermissions() {
@@ -14,9 +14,10 @@ function AssignPermissions() {
   });
 
   useEffect(() => {
-    axios.get(`/api/roles/${id}`)
+    api.get(`/roles/${id}`)
       .then(res => {
         const role = res.data;
+        console.log("Fetched role:", role);
         setPermissions({
           view: role.permissions?.includes("View"),
           create: role.permissions?.includes("Create"),
@@ -30,10 +31,12 @@ function AssignPermissions() {
   const handleSave = async () => {
     const selected = Object.keys(permissions).filter(p => permissions[p]);
     try {
-      await axios.put(`/api/roles/${id}/permissions`, { permissions: selected });
+      await api.put(`/roles/${id}/permissions`, { permissions: selected });
+      alert("Permissions updated successfully");
       navigate("/roles");
     } catch (err) {
-      console.error("Error saving permissions:", err);
+      console.error("Error saving permissions:", err.response?.data || err.message);
+      alert("Failed to update permissions");
     }
   };
 
