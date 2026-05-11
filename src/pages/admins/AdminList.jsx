@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "../../styles/admin.css";
 import api from "../../services/api";
@@ -11,7 +10,7 @@ function AdminList() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios.get("/admins")
+    api.get("/admins")
       .then(res => {
         // Handle both array and object response shapes
         const data = Array.isArray(res.data)

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { useParams } from "react-router-dom";
 import "../../styles/admin.css";
 import api from "../../services/api";
@@ -9,7 +8,7 @@ function ViewAdmin() {
   const [admin, setAdmin] = useState(null);
 
   useEffect(() => {
-    axios.get(`/admins/${id}`)
+    api.get(`/admins/${id}`)
       .then(res => setAdmin(res.data))
       .catch(err => console.error("Error fetching admin:", err));
   }, [id]);

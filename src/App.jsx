@@ -95,8 +95,8 @@ function App() {
 
             {/* Roles */}
             <Route path="/roles" element={<RolesList />} />
-            <Route path="/create-role" element={<CreateRole />} />
-            <Route path="/assign-permission/:id" element={<AssignPermissions />} />
+            <Route path="/roles/create-role" element={<CreateRole />} />
+            <Route path="/roles/assign-permissions/:id" element={<AssignPermissions />} />
 
             {/* Reports */}
             <Route path="/reports" element={<Reports />} />

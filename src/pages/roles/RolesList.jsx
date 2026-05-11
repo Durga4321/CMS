@@ -16,6 +16,11 @@ function RoleList() {
       .catch(err => console.error("Error fetching roles:", err));
   }, []);
 
+  const handleAssignPermissions = (roleId) => {
+    // ✅ Navigate to the correct route
+    navigate(`/roles/assign-permissions/${roleId}`);
+  };
+
   return (
     <div className="roles-container">
       <h2>Role List</h2>
@@ -36,7 +41,7 @@ function RoleList() {
                 <td>
                   <button
                     className="roles-btn"
-                    onClick={() => navigate(`/assign-permissions/${role.id}`)}
+                    onClick={() => handleAssignPermissions(role.id)}
                   >
                     Assign Permissions
                   </button>
@@ -50,7 +55,7 @@ function RoleList() {
           )}
         </tbody>
       </table>
-      <button className="roles-btn" onClick={() => navigate("/create-role")}>
+      <button className="roles-btn" onClick={() => navigate("/roles/create-role")}>
         + Create Role
       </button>
     </div>
