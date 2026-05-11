@@ -14,6 +14,7 @@ function AssignPermissions() {
   });
 
   useEffect(() => {
+    if (!id) return;
     api.get(`/roles/${id}`)
       .then(res => {
         const role = res.data;
@@ -54,7 +55,10 @@ function AssignPermissions() {
             {p.charAt(0).toUpperCase() + p.slice(1)}
           </label>
         ))}
-        <button className="roles-btn" onClick={handleSave}>Save Permissions</button>
+        <div className="roles-actions">
+          <button className="roles-btn" onClick={handleSave}>Save Permissions</button>
+          <button className="roles-btn" onClick={() => navigate("/roles")}>Back to Roles</button>
+        </div>
       </div>
     </div>
   );

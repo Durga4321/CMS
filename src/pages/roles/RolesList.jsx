@@ -22,20 +22,30 @@ function RoleList() {
       <table className="roles-table">
         <thead>
           <tr>
-            <th>Name</th><th>Permissions</th>
+            <th>Name</th>
+            <th>Permissions</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
           {roles.length > 0 ? (
             roles.map(role => (
-              <tr key={role.id} onClick={() => navigate(`/assign-permissions/${role.id}`)}>
+              <tr key={role.id}>
                 <td>{role.name}</td>
                 <td>{Array.isArray(role.permissions) ? role.permissions.join(", ") : ""}</td>
+                <td>
+                  <button
+                    className="roles-btn"
+                    onClick={() => navigate(`/assign-permissions/${role.id}`)}
+                  >
+                    Assign Permissions
+                  </button>
+                </td>
               </tr>
             ))
           ) : (
             <tr>
-              <td colSpan="2" style={{ textAlign: "center" }}>No roles found</td>
+              <td colSpan="3" style={{ textAlign: "center" }}>No roles found</td>
             </tr>
           )}
         </tbody>
