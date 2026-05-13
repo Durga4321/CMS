@@ -198,6 +198,24 @@
   font-size: 15px;
   color: #374151;
 }
+.back-btn {
+  margin-top: 20px;
+  background: #372e9e;
+  color: #ffffff;
+  padding: 8px 14px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.back-btn:hover {
+  background: #524769;
+  transform: translateY(-1px);
+}
+
 
 /* ===========================
    Responsive

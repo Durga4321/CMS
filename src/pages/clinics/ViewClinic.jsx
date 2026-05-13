@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import api from "../../services/api";
 import "../../styles/Clinic.css";
 
 function ViewClinic() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [clinic, setClinic] = useState(null);
 
   useEffect(() => {
@@ -35,6 +36,14 @@ function ViewClinic() {
         <p><strong>Contact Number:</strong> {clinic.contactNumber}</p>
         <p><strong>Email:</strong> {clinic.email}</p>
         <p><strong>Status:</strong> {clinic.status}</p>
+
+        {/* Back button */}
+        <button
+          className="back-btn"
+          onClick={() => navigate("/clinics")}
+        >
+           Back 
+        </button>
       </div>
     </div>
   );
