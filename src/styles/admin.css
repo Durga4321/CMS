@@ -1,43 +1,51 @@
 /* General container styling */
 .super-box {
   background: #ffffff;
-  padding: 20px;
+  padding: 24px;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.08);
   margin: 20px;
-  font-family: "Segoe UI", Roboto, sans-serif;
+  font-family: "Inter", "Segoe UI", Roboto, sans-serif;
 }
 
 /* Headings */
 .super-box h2 {
-  font-size: 22px;
+  font-size: 24px;
   font-weight: 600;
   color: #1e293b;
-  margin-bottom: 15px;
+  margin-bottom: 18px;
+  border-bottom: 2px solid #e2e8f0;
+  padding-bottom: 6px;
 }
 
 /* Table styling for Admin List */
 .super-table {
   width: 100%;
   border-collapse: collapse;
+  margin-top: 16px;
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
 }
 
 .super-table th,
 .super-table td {
-  padding: 10px;
+  padding: 12px 16px;
   text-align: left;
   border-bottom: 1px solid #e5e7eb;
   font-size: 14px;
+  color: #334155;
 }
 
 .super-table th {
-  background: #f9fafb;
+  background: #f1f5f9;
   color: #374151;
   font-weight: 600;
 }
 
 .super-table tr:hover {
-  background: #f3f4f6;
+  background: #f9fafb;
   cursor: pointer;
 }
 
@@ -45,56 +53,83 @@
 .form-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 12px;
-  margin-bottom: 15px;
+  gap: 14px;
+  margin-bottom: 18px;
 }
 
-.form-grid input {
-  padding: 10px;
+.form-grid input,
+.form-grid select {
+  padding: 12px;
   border: 1px solid #d1d5db;
   border-radius: 6px;
   font-size: 14px;
   outline: none;
 }
 
-.form-grid input:focus {
-  border-color: #6a11cb;
+.form-grid input:focus,
+.form-grid select:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 2px rgba(37,99,235,0.2);
 }
 
-/* Buttons */
+/* Primary Update button */
+.update-btn {
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.update-btn:hover {
+  background-color: #1e40af;
+  transform: translateY(-1px);
+}
+
+/* Compact Activate/Deactivate buttons */
 .activate-btn {
   background-color: #10b981; /* green */
   color: white;
   border: none;
-  padding: 10px 20px;
-  border-radius: 6px;
+  padding: 6px 14px;   /* smaller padding */
+  border-radius: 5px;
   cursor: pointer;
-  font-weight: 600;
-  margin-top: 10px;
+  font-size: 13px;     /* smaller text */
+  font-weight: 500;
+  margin-top: 6px;
+  transition: background 0.2s, transform 0.1s;
 }
 
 .activate-btn:hover {
-  background-color: #059669; /* darker green */
+  background-color: #059669;
+  transform: translateY(-1px);
 }
 
 .deactivate-btn {
   background-color: #ef4444; /* red */
   color: white;
   border: none;
-  padding: 10px 20px;
-  border-radius: 6px;
+  padding: 6px 14px;   /* smaller padding */
+  border-radius: 5px;
   cursor: pointer;
-  font-weight: 600;
-  margin-top: 10px;
+  font-size: 13px;     /* smaller text */
+  font-weight: 500;
+  margin-top: 6px;
+  transition: background 0.2s, transform 0.1s;
 }
 
 .deactivate-btn:hover {
-  background-color: #dc2626; /* darker red */
+  background-color: #dc2626;
+  transform: translateY(-1px);
 }
 
 /* Paragraphs for ViewAdmin */
 .super-box p {
   font-size: 14px;
   color: #374151;
-  margin: 6px 0;
+  margin: 8px 0;
 }

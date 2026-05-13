@@ -81,9 +81,9 @@ function Sidebar() {
           {openMenu === "roles" && (
             <ul className="submenu" onClick={(e) => e.stopPropagation()}>
               <li><NavLink to="/roles">Roles List</NavLink></li>
-              <li><NavLink to="/create-role">Create Role</NavLink></li>
-              <li><NavLink to="/assign-permission/1">Assign Permissions</NavLink></li>
-            </ul>
+              <li><NavLink to="/roles/create-role">Create Role</NavLink></li>
+             <li><NavLink to="/roles/assign-permissions/1">Assign Permissions</NavLink></li>
+             </ul>
           )}
         </li>
 

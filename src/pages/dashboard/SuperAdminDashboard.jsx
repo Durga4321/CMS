@@ -5,17 +5,18 @@ import {
   BarChart, Bar, PieChart, Pie, Cell, ResponsiveContainer
 } from "recharts";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 import "../../styles/SuperAdmin.css";
 
 class SuperAdminDashboard extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      summary: {},                // always an object
-      revenueData: [],            // always an array
-      clinicData: [],             // always an array
-      doctorDistribution: [],     // always an array
-      activities: [],             // always an array
+      summary: {},
+      revenueData: [],
+      clinicData: [],
+      doctorDistribution: [],
+      activities: [],
       loading: true,
       error: "",
       COLORS: ["#2563eb", "#10b981", "#f59e0b", "#ef4444"]
@@ -79,6 +80,26 @@ class SuperAdminDashboard extends Component {
     }
   }
 
+  handleNavigate = (type) => {
+    const { navigate } = this.props;
+    switch (type) {
+      case "clinics":
+        navigate("/clinics");
+        break;
+      case "admins":
+        navigate("/admins");
+        break;
+      case "doctors":
+        navigate("/doctors");
+        break;
+      case "revenue":
+        navigate("/revenue");
+        break;
+      default:
+        break;
+    }
+  };
+
   render() {
     const { summary, revenueData, clinicData, doctorDistribution, activities, COLORS, loading, error } = this.state;
 
@@ -91,10 +112,18 @@ class SuperAdminDashboard extends Component {
 
         {/* Top Stats */}
         <div className="super-cards">
-          <div className="super-card"><h4>Total Clinics</h4><h2>{summary.totalClinics || 0}</h2></div>
-          <div className="super-card"><h4>Total Admins</h4><h2>{summary.totalAdmins || 0}</h2></div>
-          <div className="super-card"><h4>Total Doctors</h4><h2>{summary.totalDoctors || 0}</h2></div>
-          <div className="super-card"><h4>Total Revenue</h4><h2>₹{summary.totalRevenue || 0}</h2></div>
+          <div className="super-card" onClick={() => this.handleNavigate("clinics")}>
+            <h4>Total Clinics</h4><h2>{summary.totalClinics || 0}</h2>
+          </div>
+          <div className="super-card" onClick={() => this.handleNavigate("admins")}>
+            <h4>Total Admins</h4><h2>{summary.totalAdmins || 0}</h2>
+          </div>
+          <div className="super-card" onClick={() => this.handleNavigate("doctors")}>
+            <h4>Total Doctors</h4><h2>{summary.totalDoctors || 0}</h2>
+          </div>
+          <div className="super-card" onClick={() => this.handleNavigate("revenue")}>
+            <h4>Total Revenue</h4><h2>₹{summary.totalRevenue || 0}</h2>
+          </div>
         </div>
 
         {/* Charts Row */}
@@ -165,4 +194,12 @@ class SuperAdminDashboard extends Component {
   }
 }
 
-export default SuperAdminDashboard;
+// HOC to inject navigate into class component
+export function withNavigation(Component) {
+  return function Wrapped(props) {
+    const navigate = useNavigate();
+    return <Component {...props} navigate={navigate} />;
+  };
+}
+
+export default withNavigation(SuperAdminDashboard);
