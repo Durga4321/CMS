@@ -25,48 +25,46 @@ class SuperAdminDashboard extends Component {
 
   async componentDidMount() {
     try {
-      const token = localStorage.getItem("authToken") || "";
-      api.defaults.headers.common["Authorization"] = token ? `Bearer ${token}` : "";
-
+      // Use the new api.js wrapper methods
       const [summaryRes, revenueRes, activitiesRes, clinicsRes, doctorsRes] =
         await Promise.all([
-          api.get("/dashboard/summary"),
-          api.get("/dashboard/revenue-overview"),
-          api.get("/dashboard/activities"),
-          api.get("/clinics"),
-          api.get("/doctors"),
+          api.dashboard.summary(),
+          api.dashboard.revenueOverview(),
+          api.dashboard.activities(),
+          api.clinics.list(),
+          api.users.list(), // adjust if you have a dedicated doctors endpoint
         ]);
 
       this.setState({
-        summary: summaryRes.data || {},
-        revenueData: Array.isArray(revenueRes.data?.data)
-          ? revenueRes.data.data
-          : Array.isArray(revenueRes.data)
-            ? revenueRes.data
+        summary: summaryRes || {},
+        revenueData: Array.isArray(revenueRes?.data)
+          ? revenueRes.data
+          : Array.isArray(revenueRes)
+            ? revenueRes
             : [],
-        activities: Array.isArray(activitiesRes.data?.data)
-          ? activitiesRes.data.data
-          : Array.isArray(activitiesRes.data)
-            ? activitiesRes.data
+        activities: Array.isArray(activitiesRes?.data)
+          ? activitiesRes.data
+          : Array.isArray(activitiesRes)
+            ? activitiesRes
             : [],
-        clinicData: Array.isArray(clinicsRes.data?.data)
-          ? clinicsRes.data.data.map((c, idx) => ({
+        clinicData: Array.isArray(clinicsRes?.data)
+          ? clinicsRes.data.map((c, idx) => ({
               month: c.monthName || `M${idx + 1}`,
               clinics: c.count || idx + 1,
             }))
-          : Array.isArray(clinicsRes.data)
-            ? clinicsRes.data.map((c, idx) => ({
+          : Array.isArray(clinicsRes)
+            ? clinicsRes.map((c, idx) => ({
                 month: c.monthName || `M${idx + 1}`,
                 clinics: c.count || idx + 1,
               }))
             : [],
-        doctorDistribution: Array.isArray(doctorsRes.data?.data)
-          ? doctorsRes.data.data.map(d => ({
+        doctorDistribution: Array.isArray(doctorsRes?.data)
+          ? doctorsRes.data.map(d => ({
               name: d.specialization || "Unknown",
               value: d.count || 0,
             }))
-          : Array.isArray(doctorsRes.data)
-            ? doctorsRes.data.map(d => ({
+          : Array.isArray(doctorsRes)
+            ? doctorsRes.map(d => ({
                 name: d.specialization || "Unknown",
                 value: d.count || 0,
               }))

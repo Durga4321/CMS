@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import api from "../../services/api";   // use configured axios instance
+import api from "../../services/api";
 import "../../styles/notifications.css";
 
 function NotificationList() {
@@ -8,10 +8,10 @@ function NotificationList() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    api.get("/notifications")   // ✅ backend endpoint
+    api.notifications.list()
       .then(res => {
-        console.log("Fetched notifications:", res.data);
-        setNotifications(Array.isArray(res.data) ? res.data : []);
+        console.log("Fetched notifications:", res);
+        setNotifications(Array.isArray(res) ? res : Array.isArray(res?.data) ? res.data : []);
       })
       .catch(err => console.error("Error fetching notifications:", err));
   }, []);

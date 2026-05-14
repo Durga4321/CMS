@@ -8,9 +8,9 @@ function PaymentSettings() {
   const [secretKey, setSecretKey] = useState("");
 
   useEffect(() => {
-    api.get("/settings")
+    api.settings.get()
       .then(res => {
-        const settings = res.data.payment || {};
+        const settings = res.payment || {};
         setGateway(settings.gateway || "");
         setMerchantId(settings.merchantId || "");
       })
@@ -19,10 +19,10 @@ function PaymentSettings() {
 
   const handleSave = async () => {
     try {
-      await api.put("/settings/payment", { gateway, merchantId, secretKey });
+      await api.settings.updatePayment({ gateway, merchantId, secretKey });
       alert("Payment settings updated system-wide!");
     } catch (err) {
-      console.error("Error saving payment settings:", err.response?.data || err.message);
+      console.error("Error saving payment settings:", err);
     }
   };
 

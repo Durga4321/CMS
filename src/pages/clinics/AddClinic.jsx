@@ -19,12 +19,11 @@ function AddClinic() {
   const handleSubmit = async e => {
     e.preventDefault();
     try {
-      const res = await api.post("/clinics", form); // POST /api/clinics
-      console.log("Response:", res.data);
+      await api.clinics.create(form); // ✅ wrapper method
       alert("Clinic added successfully");
       navigate("/clinics");
     } catch (err) {
-      console.error("Error adding clinic:", err.response?.data || err.message);
+      console.error("Error adding clinic:", err);
       alert("Failed to add clinic");
     }
   };
@@ -33,35 +32,11 @@ function AddClinic() {
     <div className="clinic-container centered">
       <form className="clinic-form" onSubmit={handleSubmit}>
         <h2>Add Clinic</h2>
-        <input
-          name="name"
-          placeholder="Clinic Name"
-          value={form.name}
-          onChange={handleChange}
-        />
-        <input
-          name="address"
-          placeholder="Address"
-          value={form.address}
-          onChange={handleChange}
-        />
-        <input
-          name="contact"
-          placeholder="Contact Number"
-          value={form.contact}
-          onChange={handleChange}
-        />
-        <input
-          name="email"
-          placeholder="Email Address"
-          value={form.email}
-          onChange={handleChange}
-        />
-        <select
-          name="status"
-          value={form.status}
-          onChange={handleChange}
-        >
+        <input name="name" placeholder="Clinic Name" value={form.name} onChange={handleChange} />
+        <input name="address" placeholder="Address" value={form.address} onChange={handleChange} />
+        <input name="contact" placeholder="Contact Number" value={form.contact} onChange={handleChange} />
+        <input name="email" placeholder="Email Address" value={form.email} onChange={handleChange} />
+        <select name="status" value={form.status} onChange={handleChange}>
           <option value="Active">Active</option>
           <option value="Inactive">Inactive</option>
         </select>

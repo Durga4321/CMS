@@ -9,10 +9,10 @@ function UserActivateDeactivate() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    api.get(`/users/${id}`)
+    api.users.get(id)
       .then(res => {
-        console.log("Fetched user:", res.data);
-        setUser(res.data);
+        console.log("Fetched user:", res);
+        setUser(res);
       })
       .catch(err => console.error("Error fetching user:", err));
   }, [id]);
@@ -20,12 +20,12 @@ function UserActivateDeactivate() {
   const toggleStatus = async () => {
     try {
       const newStatus = user.status === "Active" ? "Inactive" : "Active";
-      await api.put(`/users/${id}/status`, { status: newStatus });
+      await api.users.updateStatus(id, { status: newStatus });
       setUser({ ...user, status: newStatus });
       alert(`User ${newStatus} successfully`);
       navigate("/users");
     } catch (err) {
-      console.error("Error updating status:", err.response?.data || err.message);
+      console.error("Error updating status:", err);
       alert("Failed to update user status");
     }
   };

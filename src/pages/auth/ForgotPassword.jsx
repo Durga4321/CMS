@@ -30,15 +30,15 @@ function ForgotPassword() {
     }
 
     try {
-      const res = await api.post("/auth/forgot-password", { email });
-      if (res.status === 200 && res.data?.message) {
-        toast.success(res.data.message, { position: "top-center", autoClose: 1500 });
+      const res = await api.auth.forgotPassword({ email }); // ✅ wrapper method
+      if (res?.message) {
+        toast.success(res.message, { position: "top-center", autoClose: 1500 });
         navigate("/reset-password", { state: { email } });
       } else {
-        toast.error(res.data?.message || "Failed to send OTP. Try again.");
+        toast.error(res?.message || "Failed to send OTP. Try again.");
       }
     } catch (err) {
-      toast.error(err.response?.data?.message || "Failed to send OTP. Try again.");
+      toast.error(err.message || "Failed to send OTP. Try again.");
     }
   };
 

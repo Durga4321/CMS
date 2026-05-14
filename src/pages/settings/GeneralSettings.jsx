@@ -8,9 +8,9 @@ function GeneralSettings() {
   const [currency, setCurrency] = useState("");
 
   useEffect(() => {
-    api.get("/settings")
+    api.settings.get()
       .then(res => {
-        const settings = res.data.general || {};
+        const settings = res.general || {};
         setAppName(settings.appName || "");
         setTimezone(settings.timezone || "");
         setCurrency(settings.currency || "");
@@ -20,10 +20,10 @@ function GeneralSettings() {
 
   const handleSave = async () => {
     try {
-      await api.put("/settings/general", { appName, timezone, currency });
+      await api.settings.updateGeneral({ appName, timezone, currency });
       alert("General settings updated system-wide!");
     } catch (err) {
-      console.error("Error saving general settings:", err.response?.data || err.message);
+      console.error("Error saving general settings:", err);
     }
   };
 

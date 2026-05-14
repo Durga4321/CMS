@@ -10,11 +10,11 @@ function CreateRole() {
   const handleSave = async () => {
     if (!roleName) return;
     try {
-      await api.post("/roles", { name: roleName });
+      await api.roles.create({ name: roleName });
       alert("Role created successfully");
       navigate("/roles");
     } catch (err) {
-      console.error("Error creating role:", err.response?.data || err.message);
+      console.error("Error creating role:", err);
       alert("Failed to create role");
     }
   };

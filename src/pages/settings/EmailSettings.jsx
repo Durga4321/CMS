@@ -9,9 +9,9 @@ function EmailSettings() {
   const [password, setPassword] = useState("");
 
   useEffect(() => {
-    api.get("/settings")
+    api.settings.get()
       .then(res => {
-        const settings = res.data.email || {};
+        const settings = res.email || {};
         setSmtpServer(settings.smtpServer || "");
         setPort(settings.port || "");
         setUsername(settings.username || "");
@@ -21,10 +21,10 @@ function EmailSettings() {
 
   const handleSave = async () => {
     try {
-      await api.put("/settings/email", { smtpServer, port, username, password });
+      await api.settings.updateEmail({ smtpServer, port, username, password });
       alert("Email settings updated system-wide!");
     } catch (err) {
-      console.error("Error saving email settings:", err.response?.data || err.message);
+      console.error("Error saving email settings:", err);
     }
   };
 

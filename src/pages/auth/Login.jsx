@@ -16,7 +16,6 @@ function Login() {
   const [fieldErrors, setFieldErrors] = useState({});
   const navigate = useNavigate();
 
-  // ✅ On mount, check if credentials were saved
   useEffect(() => {
     const savedEmail = localStorage.getItem("rememberEmail");
     const savedPassword = localStorage.getItem("rememberPassword");
@@ -51,19 +50,17 @@ function Login() {
 
     try {
       let res;
-
       if (email === "superadmin@gmail.com") {
-        res = await api.post("/auth/super-admin-login", { email, password });
+        res = await api.auth.superAdminLogin({ email, password });
       } else {
-        res = await api.post("/auth/login", { email, password });
+        res = await api.auth.login({ email, password });
       }
 
-      if (res.status === 200 && res.data?.token) {
-        localStorage.setItem("authToken", res.data.token);
-        localStorage.setItem("role", res.data.role);
-        localStorage.setItem("name", res.data.name);
+      if (res?.token) {
+        localStorage.setItem("authToken", res.token);
+        localStorage.setItem("role", res.role);
+        localStorage.setItem("name", res.name);
 
-        // ✅ Save credentials if Remember Me is checked
         if (rememberMe) {
           localStorage.setItem("rememberEmail", email);
           localStorage.setItem("rememberPassword", password);
@@ -72,14 +69,10 @@ function Login() {
           localStorage.removeItem("rememberPassword");
         }
 
-        toast.success("Login successful!", {
-          position: "top-center",
-          autoClose: 1000,
-        });
-
+        toast.success("Login successful!", { position: "top-center", autoClose: 1000 });
         setFieldErrors({});
 
-        switch (res.data.role) {
+        switch (res.role) {
           case "SuperAdmin":
             navigate("/super-admin-dashboard");
             break;
@@ -96,28 +89,15 @@ function Login() {
             navigate("/patient-dashboard");
             break;
           default:
-            toast.error("Unknown role. Contact support.", {
-              position: "top-center",
-              autoClose: 2000,
-            });
+            toast.error("Unknown role. Contact support.", { position: "top-center", autoClose: 2000 });
         }
       } else {
-        setFieldErrors({
-          password: res.data?.message || "Login failed. Try again.",
-        });
-        toast.error(res.data?.message || "Login failed. Try again.", {
-          position: "top-center",
-          autoClose: 1000,
-        });
+        setFieldErrors({ password: res?.message || "Login failed. Try again." });
+        toast.error(res?.message || "Login failed. Try again.", { position: "top-center", autoClose: 1000 });
       }
     } catch (err) {
-      setFieldErrors({
-        password: err.response?.data?.message || "Login failed. Try again.",
-      });
-      toast.error(err.response?.data?.message || "Login failed. Try again.", {
-        position: "top-center",
-        autoClose: 1000,
-      });
+      setFieldErrors({ password: err.message || "Login failed. Try again." });
+      toast.error(err.message || "Login failed. Try again.", { position: "top-center", autoClose: 1000 });
     }
   };
 
@@ -147,10 +127,7 @@ function Login() {
           <div className="auth-form-card auth-form-card-login">
             <div className="auth-form-header">
               <h2>CMS Login</h2>
-              <p>
-                Access the cms panel to manage users, roles, and system
-                settings.
-              </p>
+              <p>Access the CMS panel to manage users, roles, and system settings.</p>
             </div>
 
             <div className="auth-form-grid">
@@ -166,9 +143,7 @@ function Login() {
                     setFieldErrors((prev) => ({ ...prev, email: "" }));
                   }}
                 />
-                {fieldErrors.email && (
-                  <div className="auth-field-error">{fieldErrors.email}</div>
-                )}
+                {fieldErrors.email && <div className="auth-field-error">{fieldErrors.email}</div>}
               </div>
 
               <div className="auth-form-group">
@@ -184,15 +159,10 @@ function Login() {
                   }}
                   style={{ paddingRight: 40 }}
                 />
-                <span
-                  className="auth-password-toggle"
-                  onClick={() => setShowPassword(!showPassword)}
-                >
+                <span className="auth-password-toggle" onClick={() => setShowPassword(!showPassword)}>
                   {showPassword ? <FaEyeSlash /> : <FaEye />}
                 </span>
-                {fieldErrors.password && (
-                  <div className="auth-field-error">{fieldErrors.password}</div>
-                )}
+                {fieldErrors.password && <div className="auth-field-error">{fieldErrors.password}</div>}
               </div>
             </div>
 
@@ -205,23 +175,16 @@ function Login() {
                 />
                 Remember me
               </label>
-              <span
-                className="auth-link"
-                onClick={() => navigate("/forgot-password")}
-              >
+              <span className="auth-link" onClick={() => navigate("/forgot-password")}>
                 Forgot Password?
               </span>
             </div>
 
-            <button className="auth-btn" onClick={handleLogin}>
-              Login
-            </button>
+            <button className="auth-btn" onClick={handleLogin}>Login</button>
 
             <div className="auth-bottom-text">
-              Not register yet ?
-              <span onClick={() => navigate("/register")}>
-                Create an Account
-              </span>
+              Not registered yet?
+              <span onClick={() => navigate("/register")}> Create an Account</span>
             </div>
           </div>
         </div>

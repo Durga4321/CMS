@@ -9,10 +9,10 @@ function UserDetails() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    api.get(`/users/${id}`)
+    api.users.get(id)
       .then(res => {
-        console.log("Fetched user:", res.data);
-        setUser(res.data);
+        console.log("Fetched user:", res);
+        setUser(res);
       })
       .catch(err => console.error("Error fetching user details:", err));
   }, [id]);

@@ -7,9 +7,9 @@ function SmsSettings() {
   const [apiKey, setApiKey] = useState("");
 
   useEffect(() => {
-    api.get("/settings")
+    api.settings.get()
       .then(res => {
-        const settings = res.data.sms || {};
+        const settings = res.sms || {};
         setProvider(settings.provider || "");
         setApiKey(settings.apiKey || "");
       })
@@ -18,10 +18,10 @@ function SmsSettings() {
 
   const handleSave = async () => {
     try {
-      await api.put("/settings/sms", { provider, apiKey });
+      await api.settings.updateSms({ provider, apiKey });
       alert("SMS settings updated system-wide!");
     } catch (err) {
-      console.error("Error saving SMS settings:", err.response?.data || err.message);
+      console.error("Error saving SMS settings:", err);
     }
   };
 

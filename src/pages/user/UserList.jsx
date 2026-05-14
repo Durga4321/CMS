@@ -13,10 +13,10 @@ function UserList() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    api.get("/users")
+    api.users.list()
       .then(res => {
-        console.log("Fetched users:", res.data);
-        setUsers(Array.isArray(res.data) ? res.data : []);
+        console.log("Fetched users:", res);
+        setUsers(Array.isArray(res) ? res : Array.isArray(res?.data) ? res.data : []);
         setLoading(false);
       })
       .catch(err => {

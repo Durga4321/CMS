@@ -6,7 +6,7 @@ import { AuthWaves } from "../../components/AuthWaves";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "../../styles/auth-new.css";
-import api from "../../services/api"; // axios instance
+import api from "../../services/api";
 
 function ResetPassword() {
   const [otp, setOtp] = useState("");
@@ -41,20 +41,21 @@ function ResetPassword() {
 
     try {
       setFieldErrors({});
-      const res = await api.post("/auth/reset-password", {
+      const res = await api.auth.resetPassword({
+        email,
         otp,
         newPassword,
         confirmPassword,
-      });
+      }); // ✅ wrapper method
 
-      setSuccess(res.data.message || "Password reset successful! Redirecting...");
-      toast.success(res.data.message || "Password reset successful!", {
+      setSuccess(res?.message || "Password reset successful! Redirecting...");
+      toast.success(res?.message || "Password reset successful!", {
         position: "top-center",
         autoClose: 1500,
       });
       setTimeout(() => navigate("/login"), 2000);
     } catch (err) {
-      toast.error(err.response?.data?.message || "Reset failed. Try again.");
+      toast.error(err.message || "Reset failed. Try again.");
     }
   };
 
@@ -108,9 +109,7 @@ function ResetPassword() {
                     setFieldErrors((prev) => ({ ...prev, otp: "" }));
                   }}
                 />
-                {fieldErrors.otp && (
-                  <div className="auth-field-error">{fieldErrors.otp}</div>
-                )}
+                {fieldErrors.otp && <div className="auth-field-error">{fieldErrors.otp}</div>}
               </div>
 
               {/* New Password */}
@@ -133,9 +132,7 @@ function ResetPassword() {
                 >
                   {showPassword ? <FaEyeSlash /> : <FaEye />}
                 </span>
-                {fieldErrors.newPassword && (
-                  <div className="auth-field-error">{fieldErrors.newPassword}</div>
-                )}
+                {fieldErrors.newPassword && <div className="auth-field-error">{fieldErrors.newPassword}</div>}
               </div>
 
               {/* Confirm Password */}
@@ -158,9 +155,7 @@ function ResetPassword() {
                 >
                   {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
                 </span>
-                {fieldErrors.confirmPassword && (
-                  <div className="auth-field-error">{fieldErrors.confirmPassword}</div>
-                )}
+                {fieldErrors.confirmPassword && <div className="auth-field-error">{fieldErrors.confirmPassword}</div>}
               </div>
             </div>
 

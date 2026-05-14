@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import api from "../../services/api";   // use configured axios instance
+import api from "../../services/api";
 import "../../styles/notifications.css";
 
 function SendNotification() {
@@ -15,13 +15,13 @@ function SendNotification() {
         targetUsers: targetUsers.split(",").map(u => u.trim())
       };
 
-      await api.post("/notifications", payload);   // ✅ backend endpoint
+      await api.notifications.create(payload); // ✅ wrapper method
       alert("Notification delivered successfully!");
       setTitle("");
       setMessage("");
       setTargetUsers("");
     } catch (err) {
-      console.error("Error sending notification:", err.response?.data || err.message);
+      console.error("Error sending notification:", err);
       alert("Failed to send notification");
     }
   };

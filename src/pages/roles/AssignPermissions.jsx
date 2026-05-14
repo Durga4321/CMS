@@ -15,9 +15,8 @@ function AssignPermissions() {
 
   useEffect(() => {
     if (!id) return;
-    api.get(`/roles/${id}`)
-      .then(res => {
-        const role = res.data;
+    api.roles.get(id)
+      .then(role => {
         console.log("Fetched role:", role);
         setPermissions({
           view: role.permissions?.includes("View"),
@@ -32,11 +31,11 @@ function AssignPermissions() {
   const handleSave = async () => {
     const selected = Object.keys(permissions).filter(p => permissions[p]);
     try {
-      await api.put(`/roles/${id}/permissions`, { permissions: selected });
+      await api.roles.updatePermissions(id, { permissions: selected });
       alert("Permissions updated successfully");
       navigate("/roles");
     } catch (err) {
-      console.error("Error saving permissions:", err.response?.data || err.message);
+      console.error("Error saving permissions:", err);
       alert("Failed to update permissions");
     }
   };

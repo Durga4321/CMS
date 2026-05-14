@@ -57,22 +57,21 @@ function Register() {
     }
 
     try {
-      const res = await api.post("/auth/register", formData);
+      const res = await api.auth.register(formData); // ✅ wrapper method
 
-      if (res.status === 200 && res.data?.message) {
-        toast.success(res.data.message || "Registration Successful 🎉", {
+      if (res?.message) {
+        toast.success(res.message || "Registration Successful 🎉", {
           position: "top-center",
           autoClose: 1500,
         });
         setTimeout(() => navigate("/login"), 1500);
       } else {
-        toast.error(res.data?.message || "Registration failed. Try again.");
+        toast.error(res?.message || "Registration failed. Try again.");
       }
     } catch (err) {
-      console.error("Registration error:", err.response?.data || err.message);
+      console.error("Registration error:", err);
       toast.error(
-        err.response?.data?.message ||
-          "Registration failed. Please check your details."
+        err.message || "Registration failed. Please check your details."
       );
     }
   };
@@ -271,7 +270,6 @@ function Register() {
                 <div className="auth-field-error">{errors.terms}</div>
               )}
             </div>
-
             {/* Submit Button */}
             <button className="auth-btn" onClick={handleRegister}>
               Register

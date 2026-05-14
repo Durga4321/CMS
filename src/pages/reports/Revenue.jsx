@@ -12,13 +12,11 @@ function RevenueReport() {
 
   const fetchData = async () => {
     try {
-      const res = await api.get("/reports/revenue", {
-        params: { startDate, endDate }
-      });
-      console.log("Revenue report:", res.data);
-      setData(Array.isArray(res.data) ? res.data : []);
+      const res = await api.reports.revenueReport({ startDate, endDate }); // ✅ wrapper method
+      console.log("Revenue report:", res);
+      setData(Array.isArray(res) ? res : Array.isArray(res?.data) ? res.data : []);
     } catch (err) {
-      console.error("Error fetching revenue report:", err.response?.data || err.message);
+      console.error("Error fetching revenue report:", err);
     }
   };
 

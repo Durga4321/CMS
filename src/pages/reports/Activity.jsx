@@ -6,10 +6,10 @@ function UserActivity() {
   const [activities, setActivities] = useState([]);
 
   useEffect(() => {
-    api.get("/reports/activity")
+    api.reports.activityReport()
       .then(res => {
-        console.log("User activity:", res.data);
-        setActivities(Array.isArray(res.data) ? res.data : []);
+        console.log("User activity:", res);
+        setActivities(Array.isArray(res) ? res : Array.isArray(res?.data) ? res.data : []);
       })
       .catch(err => console.error("Error fetching user activity:", err));
   }, []);

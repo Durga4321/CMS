@@ -9,11 +9,8 @@ function ViewClinic() {
   const [clinic, setClinic] = useState(null);
 
   useEffect(() => {
-    api.get(`/clinics/${id}`)
-      .then(res => {
-        console.log("Fetched clinic:", res.data);
-        setClinic(res.data);
-      })
+    api.clinics.get(id)
+      .then(res => setClinic(res))
       .catch(err => console.error("Error fetching clinic:", err));
   }, [id]);
 
@@ -36,14 +33,7 @@ function ViewClinic() {
         <p><strong>Contact Number:</strong> {clinic.contactNumber}</p>
         <p><strong>Email:</strong> {clinic.email}</p>
         <p><strong>Status:</strong> {clinic.status}</p>
-
-        {/* Back button */}
-        <button
-          className="back-btn"
-          onClick={() => navigate("/clinics")}
-        >
-           Back 
-        </button>
+        <button className="back-btn" onClick={() => navigate("/clinics")}>Back</button>
       </div>
     </div>
   );

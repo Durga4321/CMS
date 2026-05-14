@@ -8,16 +8,15 @@ function RoleList() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    api.get("/roles")
+    api.roles.list()
       .then(res => {
-        console.log("Fetched roles:", res.data);
-        setRoles(Array.isArray(res.data) ? res.data : []);
+        console.log("Fetched roles:", res);
+        setRoles(Array.isArray(res) ? res : Array.isArray(res?.data) ? res.data : []);
       })
       .catch(err => console.error("Error fetching roles:", err));
   }, []);
 
   const handleAssignPermissions = (roleId) => {
-    // ✅ Navigate to the correct route
     navigate(`/roles/assign-permissions/${roleId}`);
   };
 
