@@ -1,0 +1,71 @@
+.patient-container {
+  padding: 20px;
+  background: #f8fafc;
+  min-height: 100vh;
+}
+
+.patient-main {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.patient-title {
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: #1e293b;
+}
+
+.patient-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.patient-form input,
+.patient-form select,
+.patient-form textarea {
+  padding: 10px;
+  border: 1px solid #e2e8f0;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.patient-btn {
+  background: #2563eb;
+  color: #fff;
+  border: none;
+  padding: 12px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.patient-btn:hover {
+  background: #1e40af;
+}
+
+.patient-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.patient-table th,
+.patient-table td {
+  border: 1px solid #e2e8f0;
+  padding: 10px;
+  text-align: left;
+}
+
+.patient-table th {
+  background: #f1f5f9;
+  font-weight: 600;
+}
+
+.patient-empty {
+  text-align: center;
+  color: #64748b;
+  font-style: italic;
+}

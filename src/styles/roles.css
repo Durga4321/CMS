@@ -90,3 +90,9 @@
   font-size: 15px;
   color: #334155;
 }
+.roles-hint{
+  display:block;
+  margin-top:8px;
+  color:#64748b;
+  font-size:13px;
+}

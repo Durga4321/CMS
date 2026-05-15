@@ -1,0 +1,55 @@
+.receptionist-reports-container {
+  padding: 20px;
+  background: #f8fafc;
+  min-height: 100vh;
+}
+
+.receptionist-reports-main {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.receptionist-reports-title {
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: #1e293b;
+}
+
+.receptionist-reports-tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.receptionist-reports-tabs button {
+  padding: 8px 12px;
+  border: 1px solid #e2e8f0;
+  background: #f1f5f9;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.receptionist-reports-tabs button.active {
+  background: #2563eb;
+  color: #fff;
+}
+
+.receptionist-reports-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.receptionist-reports-table th,
+.receptionist-reports-table td {
+  border: 1px solid #e2e8f0;
+  padding: 10px;
+  text-align: left;
+}
+
+.receptionist-reports-table th {
+  background: #f1f5f9;
+  font-weight: 600;
+}

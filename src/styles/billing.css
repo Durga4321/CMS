@@ -1,0 +1,64 @@
+.billing-container {
+  padding: 20px;
+  background: #f8fafc;
+  min-height: 100vh;
+}
+
+.billing-main {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.billing-title {
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: #1e293b;
+}
+
+.billing-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.billing-form input,
+.billing-form textarea {
+  padding: 10px;
+  border: 1px solid #e2e8f0;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.billing-btn {
+  background: #2563eb;
+  color: #fff;
+  border: none;
+  padding: 12px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.billing-btn:hover {
+  background: #1e40af;
+}
+
+.billing-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.billing-table th,
+.billing-table td {
+  border: 1px solid #e2e8f0;
+  padding: 10px;
+  text-align: left;
+}
+
+.billing-table th {
+  background: #f1f5f9;
+  font-weight: 600;
+}

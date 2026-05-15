@@ -1,0 +1,111 @@
+.appointments-container {
+  padding: 20px;
+  background: #f8fafc;
+  min-height: 100vh;
+}
+
+.appointments-main {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.appointments-title {
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: #1e293b;
+}
+
+.appointments-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.appointments-form input,
+.appointments-form select {
+  padding: 10px;
+  border: 1px solid #e2e8f0;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.appointments-btn {
+  background: #2563eb;
+  color: #fff;
+  border: none;
+  padding: 12px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.appointments-btn:hover {
+  background: #1e40af;
+}
+
+.appointments-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.appointments-table th,
+.appointments-table td {
+  border: 1px solid #e2e8f0;
+  padding: 10px;
+  text-align: left;
+}
+
+.appointments-table th {
+  background: #f1f5f9;
+  font-weight: 600;
+}
+
+.appointments-list {
+  list-style: none;
+  padding: 0;
+  margin-top: 20px;
+}
+
+.appointments-list-item {
+  padding: 10px;
+  border: 1px solid #e2e8f0;
+  border-radius: 4px;
+  margin-bottom: 10px;
+  background: #fff;
+}
+
+/* ✅ New styles for Waiting Queue tokens and statuses */
+.appointments-token {
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.appointments-status {
+  padding: 6px 10px;
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #fff;
+  display: inline-block;
+  min-width: 100px;
+  text-align: center;
+}
+
+.appointments-status.waiting {
+  background-color: #f59e0b; /* amber */
+}
+
+.appointments-status.in_consultation {
+  background-color: #2563eb; /* blue */
+}
+
+.appointments-status.completed {
+  background-color: #16a34a; /* green */
+}
+
+.appointments-status.cancelled {
+  background-color: #dc2626; /* red */
+}

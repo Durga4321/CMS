@@ -158,6 +158,33 @@ export const api = {
     remove: (id) => apiRequest(byId("/api/users", id), { method: "DELETE" }),
     updateStatus: (id, data) => apiRequest(`${byId("/api/users", id)}/status`, json("PUT", data)),
   },
+  receptionist: {
+    // Appointments
+    getTodayAppointments: () => apiRequest("/api/receptionist/appointments/today"),
+    getWaitingPatients: () => apiRequest("/api/receptionist/patients/waiting"),
+    getCompletedAppointments: () => apiRequest("/api/receptionist/appointments/completed"),
+    bookAppointment: (data) => apiRequest("/api/receptionist/appointments", json("POST", data)),
+    getAppointment: (id) => apiRequest(byId("/api/receptionist/appointments", id)),
+    updateAppointment: (id, data) => apiRequest(byId("/api/receptionist/appointments", id), json("PUT", data)),
+
+    // Patients
+    addPatient: (data) => apiRequest("/api/receptionist/patients", json("POST", data)),
+    getPatient: (id) => apiRequest(byId("/api/receptionist/patients", id)),
+    updatePatient: (id, data) => apiRequest(byId("/api/receptionist/patients", id), json("PUT", data)),
+
+    // Billing
+    createBill: (data) => apiRequest("/api/receptionist/billing", json("POST", data)),
+    invoices: () => apiRequest("/api/receptionist/invoices"),
+    getInvoice: (id) => apiRequest(byId("/api/receptionist/invoices", id)),
+    paymentHistory: () => apiRequest("/api/receptionist/payments"),
+
+    // Reports
+    reports: () => apiRequest("/api/receptionist/reports"),
+    dailyCollectionReport: () => apiRequest("/api/receptionist/reports/daily"),
+    appointmentReport: () => apiRequest("/api/receptionist/reports/appointments"),
+    doctorWiseReport: () => apiRequest("/api/receptionist/reports/doctor"),
+    pendingPaymentsReport: () => apiRequest("/api/receptionist/reports/pending"),
+  },
 };
 
 export default api;

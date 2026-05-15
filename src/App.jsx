@@ -11,8 +11,11 @@ import Register from "./pages/auth/Register";
 import ForgotPassword from "./pages/auth/ForgotPassword";
 import ResetPassword from "./pages/auth/ResetPassword";
 
-// Dashboard
+// Super Admin Dashboard
 import SuperAdminDashboard from "./pages/dashboard/SuperAdminDashboard";
+
+// Receptionist Dashboard
+import ReceptionistDashboard from "./pages/dashboard/ReceptionistDashboard";
 
 // Clinics
 import ClinicList from "./pages/clinics/ClinicList";
@@ -55,10 +58,28 @@ import LoginHistory from "./pages/logs/LoginHistory";
 import Notifications from "./pages/notifications/Notifications";
 import SendNotification from "./pages/notifications/SendNotification";
 
+// Receptionist Modules
+import AddPatient from "./pages/receptionist/AddPatient";
+import PatientList from "./pages/receptionist/PatientList";
+import ViewPatient from "./pages/receptionist/ViewPatient";
+import EditPatient from "./pages/receptionist/EditPatient";
+
+import BookAppointment from "./pages/receptionist/BookAppointment";
+import AppointmentList from "./pages/receptionist/AppointmentList";
+import WaitingQueue from "./pages/receptionist/WaitingQueue";
+import EditAppointment from "./pages/receptionist/EditAppointment";
+import AppointmentDetails from "./pages/receptionist/AppointmentDetails";
+
+import Billing from "./pages/receptionist/Billing";
+import Invoices from "./pages/receptionist/Invoices";
+import InvoiceDetails from "./pages/receptionist/InvoiceDetails";
+import PaymentHistory from "./pages/receptionist/PaymentHistory";
+
+import ReceptionistReports from "./pages/receptionist/ReceptionistReports";
+
 function App() {
   return (
     <BrowserRouter>
-
       <Routes>
         {/* Default Redirect */}
         <Route path="/" element={<Navigate to="/login" />} />
@@ -72,9 +93,13 @@ function App() {
         {/* Protected Routes */}
         <Route element={<ProtectedRoute />}>
           <Route element={<MainLayout />}>
-
             <Route path="/home" element={<Home />} />
+
+            {/* Super Admin Dashboard */}
             <Route path="/super-admin-dashboard" element={<SuperAdminDashboard />} />
+
+            {/* Receptionist Dashboard */}
+            <Route path="/receptionist-dashboard" element={<ReceptionistDashboard />} />
 
             {/* Clinics */}
             <Route path="/clinics" element={<ClinicList />} />
@@ -117,6 +142,24 @@ function App() {
             <Route path="/notifications" element={<Notifications />} />
             <Route path="/send-notification" element={<SendNotification />} />
 
+            {/* Receptionist Modules */}
+            <Route path="/receptionist/add-patient" element={<AddPatient />} />
+            <Route path="/receptionist/patients" element={<PatientList />} />
+            <Route path="/receptionist/view-patient/:id" element={<ViewPatient />} />
+            <Route path="/receptionist/edit-patient/:id" element={<EditPatient />} />
+
+            <Route path="/receptionist/book-appointment" element={<BookAppointment />} />
+            <Route path="/receptionist/appointments" element={<AppointmentList />} />
+            <Route path="/receptionist/waiting-queue" element={<WaitingQueue />} />
+            <Route path="/receptionist/edit-appointment/:id" element={<EditAppointment />} />
+            <Route path="/receptionist/appointment-details/:id" element={<AppointmentDetails />} />
+
+            <Route path="/receptionist/billing" element={<Billing />} />
+            <Route path="/receptionist/invoices" element={<Invoices />} />
+            <Route path="/receptionist/invoice-details/:id" element={<InvoiceDetails />} />
+            <Route path="/receptionist/payment-history" element={<PaymentHistory />} />
+
+            <Route path="/receptionist/reports" element={<ReceptionistReports />} />
           </Route>
         </Route>
 
@@ -125,12 +168,7 @@ function App() {
       </Routes>
 
       {/* ✅ Toast Container (Global) */}
-      <ToastContainer
-        position="top-right"
-        autoClose={3000}
-        theme="colored"
-      />
-
+      <ToastContainer position="top-right" autoClose={3000} theme="colored" />
     </BrowserRouter>
   );
 }
