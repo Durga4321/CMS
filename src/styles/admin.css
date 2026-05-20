@@ -1,161 +1,367 @@
-/* General container styling */
-.super-box {
-  background: #ffffff;
-  padding: 24px;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-  margin: 20px;
-  font-family: "Inter", "Segoe UI", Roboto, sans-serif;
+/* =========================================================
+   GLOBAL RESET
+========================================================= */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Inter", "Segoe UI", sans-serif;
 }
 
-/* Headings */
-.super-box h2 {
-  font-size: 24px;
-  font-weight: 600;
-  color: #1e293b;
+/* =========================================================
+   PAGE CONTAINERS
+========================================================= */
+
+.admins-container,
+.admins-form-container,
+.admins-view-container {
+  width: 100%;
+  min-height: calc(100vh - 70px);
+  padding: 14px;
+  background: #f8fafc;
+}
+
+.admins-form-container,
+.admins-view-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* =========================================================
+   LOADING / ERROR
+========================================================= */
+
+.admins-loading,
+.admins-error {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 300px;
+  font-size: 18px;
+  color: #64748b;
+  font-weight: 500;
+}
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.admins-header{
+  display:flex;
+  justify-content:flex-start;
+  align-items:flex-start;
+  flex-direction:column;
   margin-bottom: 18px;
-  border-bottom: 2px solid #e2e8f0;
-  padding-bottom: 6px;
+  gap:10px;
 }
 
-/* Table styling for Admin List */
-.super-table {
+.admins-header h2,
+.admins-form-header h2 {
+  font-size: 24px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.admins-header p,
+.admins-form-header p {
+  font-size: 13px;
+  color: #64748b;
+  margin-top: 4px;
+}
+
+/* =========================================================
+   CARDS
+========================================================= */
+
+.admins-card,
+.admins-form-card,
+.admins-view-card {
+  width: 100%;
+  background: #ffffff;
+  border-radius: 14px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.06);
+}
+
+.admins-card {
+  padding: 18px;
+}
+
+.admins-form-card,
+.admins-view-card {
+  max-width: 560px;
+  padding: 20px 24px;
+}
+
+/* =========================================================
+   TABLE
+========================================================= */
+
+.admins-table-wrapper {
+  overflow-x: auto;
+}
+
+.admins-table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 16px;
-  background: #fff;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
 }
 
-.super-table th,
-.super-table td {
-  padding: 12px 16px;
-  text-align: left;
-  border-bottom: 1px solid #e5e7eb;
-  font-size: 14px;
-  color: #334155;
-}
-
-.super-table th {
+.admins-table th {
   background: #f1f5f9;
-  color: #374151;
+  color: #334155;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 13px;
+  text-align: left;
+}
+
+.admins-table td {
+  padding: 13px;
+  border-top: 1px solid #e2e8f0;
+  color: #475569;
+  font-size: 14px;
+}
+
+.admins-table tr {
+  transition: 0.2s ease;
+}
+
+.admins-table tr:hover {
+  background: #f8fafc;
+  cursor: pointer;
+}
+
+.admins-empty {
+  text-align: center;
+  padding: 26px;
+  color: #64748b;
+}
+
+/* =========================================================
+   FORM
+========================================================= */
+
+.admins-form {
+  margin-top: 16px;
+}
+
+.admins-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.admins-form-group {
+  margin-bottom: 12px;
+}
+
+.admins-form-group label {
+  display: block;
+  margin-bottom: 5px;
+  color: #334155;
+  font-size: 13px;
   font-weight: 600;
 }
 
-.super-table tr:hover {
-  background: #f9fafb;
-  cursor: pointer;
-}
-
-/* Form grid for Create/Edit Admin */
-.form-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 14px;
-  margin-bottom: 18px;
-}
-
-.form-grid input,
-.form-grid select {
-  padding: 12px;
-  border: 1px solid #d1d5db;
-  border-radius: 6px;
+.admins-form-group input,
+.admins-form-group select {
+  width: 100%;
+  height: 42px;
+  padding: 10px 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
   font-size: 14px;
+  background: #ffffff;
+  transition: 0.2s ease;
+}
+
+.admins-form-group input:focus,
+.admins-form-group select:focus {
   outline: none;
-}
-
-.form-grid input:focus,
-.form-grid select:focus {
   border-color: #2563eb;
-  box-shadow: 0 0 0 2px rgba(37,99,235,0.2);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
 }
 
-/* Primary Update button */
-.update-btn {
-  background-color: #2563eb;
-  color: white;
+/* =========================================================
+   BUTTONS
+========================================================= */
+
+.admins-btn-group {
+  display: flex;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.admins-primary-btn,
+.admins-secondary-btn,
+.admins-back-btn {
+  flex: 1;
+  height: 42px;
   border: none;
-  padding: 10px 18px;
-  border-radius: 6px;
+  border-radius: 8px;
   cursor: pointer;
   font-size: 14px;
-  font-weight: 500;
-  transition: background 0.2s, transform 0.1s;
+  font-weight: 600;
+  transition: 0.2s ease;
+  text-decoration: none;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.update-btn:hover {
-  background-color: #1e40af;
+/* PRIMARY BUTTON */
+
+.admins-primary-btn {
+  background: #2563eb;
+  color: #ffffff;
+}
+
+.admins-primary-btn:hover {
+  background: #1d4ed8;
   transform: translateY(-1px);
 }
 
-/* Compact Activate/Deactivate buttons */
-.activate-btn {
-  background-color: #10b981; /* green */
-  color: white;
-  border: none;
-  padding: 10px 18px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: 500;
-  transition: background 0.2s, transform 0.1s;
+/* SECONDARY BUTTON */
+
+.admins-secondary-btn {
+  background: #e2e8f0;
+  color: #0f172a;
 }
 
-.activate-btn:hover {
-  background-color: #059669;
-  transform: translateY(-1px);
+.admins-secondary-btn:hover {
+  background: #cbd5e1;
 }
 
-.deactivate-btn {
-  background-color: #ef4444; /* red */
-  color: white;
-  border: none;
-  padding: 6px 14px;   /* smaller padding */
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 13px;     /* smaller text */
-  font-weight: 500;
-  margin-top: 6px;
-  transition: background 0.2s, transform 0.1s;
+/* BACK BUTTON */
+
+.admins-back-btn{
+  width:100%;
+  height:48px;
+  margin-top:20px;
+  background:#1e3a8a !important;
+  color:#ffffff !important;
+  border:none;
+  border-radius:10px;
+  font-size:15px;
+  font-weight:700;
+  cursor:pointer;
+  transition:0.2s ease;
+
+  display:flex;
+  justify-content:center;
+  align-items:center;
 }
 
-.deactivate-btn:hover {
-  background-color: #dc2626;
-  transform: translateY(-1px);
+.admins-back-btn:hover{
+  background:#172554 !important;
+  transform:translateY(-1px);
+  box-shadow:0 4px 12px rgba(30,58,138,0.25);
+}
+/* =========================================================
+   STATUS BADGES
+========================================================= */
+
+.admins-status-active,
+.admins-status-inactive {
+  padding: 6px 12px;
+  border-radius: 30px;
+  font-size: 12px;
+  font-weight: 600;
 }
 
-/* Paragraphs for ViewAdmin */
-.super-box p {
-  font-size: 14px;
-  color: #374151;
-  margin: 8px 0;
+.admins-status-active {
+  background: #dcfce7;
+  color: #166534;
 }
-/* Validation Error */
 
-.validation-error {
-  color: red;
-  font-size: 13px;
-  margin-top: 4px;
+.admins-status-inactive {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+/* =========================================================
+   VIEW PAGE
+========================================================= */
+
+.admins-view-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.admins-view-item {
+  background: #f8fafc;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+}
+
+.admins-view-item label {
   display: block;
+  margin-bottom: 4px;
+  color: #64748b;
+  font-size: 12px;
+  font-weight: 500;
 }
 
-.error-input {
-  border: 1px solid red !important;
+.admins-view-item span {
+  color: #0f172a;
+  font-size: 14px;
+  font-weight: 600;
 }
 
-/* Toastify */
+/* =========================================================
+   VALIDATION
+========================================================= */
+
+.admins-error-text {
+  display: block;
+  margin-top: 4px;
+  color: #ef4444;
+  font-size: 11px;
+}
+
+.admins-input-error {
+  border-color: #ef4444 !important;
+  background: #fef2f2 !important;
+}
+
+/* =========================================================
+   TOASTIFY
+========================================================= */
 
 .Toastify__toast {
+  border-radius: 10px;
   font-size: 14px;
-  border-radius: 8px;
 }
 
-.Toastify__toast--success {
-  background: #10b981;
-}
+/* =========================================================
+   RESPONSIVE
+========================================================= */
 
-.Toastify__toast--error {
-  background: #ef4444;
+@media (max-width: 768px) {
+
+  .admins-grid,
+  .admins-view-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .admins-btn-group {
+    flex-direction: column;
+  }
+
+  .admins-form-card,
+  .admins-view-card {
+    padding: 16px;
+  }
+
+  .admins-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
 }

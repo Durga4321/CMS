@@ -6,7 +6,7 @@ import { AuthWaves } from "../../components/AuthWaves";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "../../styles/auth-new.css";
-import api from "../../services/api";
+import api, { setAuthToken } from "../../services/api";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -57,6 +57,7 @@ function Login() {
       }
 
       if (res?.token) {
+        setAuthToken(res.token);
         localStorage.setItem("authToken", res.token);
         localStorage.setItem("role", res.role);
         localStorage.setItem("name", res.name);
@@ -110,7 +111,7 @@ function Login() {
             <div className="auth-welcome">
               Welcome to
               <br />
-              Your Clinic
+              Our Clinic
             </div>
             <div className="auth-brand">
               <AuthLogo />

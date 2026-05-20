@@ -1,8 +1,13 @@
 import React, { useEffect, useState } from "react";
+
 import { useParams, useNavigate } from "react-router-dom";
+
 import "../../styles/admin.css";
+
 import api from "../../services/api";
+
 import { ToastContainer, toast } from "react-toastify";
+
 import "react-toastify/dist/ReactToastify.css";
 
 function EditAdmin() {
@@ -19,11 +24,6 @@ function EditAdmin() {
     status: "Active"
   });
 
-  const [errors, setErrors] = useState({});
-
-  const emailRegex =
-    /^[a-zA-Z0-9._%+-]+@(gmail\.com|yahoo\.com|outlook\.com|hotmail\.com)$/;
-
   useEffect(() => {
 
     api.admins.get(id)
@@ -38,68 +38,21 @@ function EditAdmin() {
         });
 
       })
-      .catch(err => console.error("Error fetching admin:", err));
+      .catch(err => console.error(err));
 
   }, [id]);
 
   const handleChange = (e) => {
 
-    const { name, value } = e.target;
-
-    let updatedValue = value;
-
-    if (name === "name") {
-      updatedValue = value.replace(/[^A-Za-z\s]/g, "");
-    }
-
-    if (name === "clinic") {
-      updatedValue = value.replace(/[^A-Za-z\s]/g, "");
-    }
-
-    if (name === "role") {
-      updatedValue = value.replace(/[^A-Za-z\s]/g, "");
-    }
-
     setFormData({
       ...formData,
-      [name]: updatedValue
+      [e.target.name]: e.target.value
     });
   };
 
-  const validateForm = () => {
+  const handleUpdate = async (e) => {
 
-    const newErrors = {};
-
-    if (!formData.name.trim()) {
-      newErrors.name = "Name is required";
-    }
-
-    if (!formData.email.trim()) {
-      newErrors.email = "Email is required";
-    } else if (!emailRegex.test(formData.email)) {
-      newErrors.email =
-        "Only gmail.com, yahoo.com, outlook.com, hotmail.com emails allowed";
-    }
-
-    if (!formData.clinic.trim()) {
-      newErrors.clinic = "Clinic is required";
-    }
-
-    if (!formData.role.trim()) {
-      newErrors.role = "Role is required";
-    }
-
-    setErrors(newErrors);
-
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleUpdate = async () => {
-
-    if (!validateForm()) {
-      toast.error("Please fix validation errors");
-      return;
-    }
+    e.preventDefault();
 
     try {
 
@@ -113,87 +66,126 @@ function EditAdmin() {
 
     } catch (err) {
 
-      console.error("Error updating admin:", err);
+      console.error(err);
 
       toast.error("Failed to update admin");
     }
   };
 
   return (
-    <div className="super-box">
+
+    <div className="admins-form-container">
 
       <ToastContainer position="top-right" autoClose={2000} />
 
-      <h2>Edit Admin</h2>
+      <div className="admins-form-card">
 
-      <div className="form-grid">
+        <div className="admins-form-header">
 
-        <div>
-          <input
-            name="name"
-            placeholder="Name"
-            value={formData.name || ""}
-            onChange={handleChange}
-            className={errors.name ? "error-input" : ""}
-          />
-          {errors.name && (
-            <span className="validation-error">{errors.name}</span>
-          )}
+          <h2>Edit Admin</h2>
+
+          <p>Update administrator details</p>
+
         </div>
 
-        <div>
-          <input
-            name="email"
-            placeholder="Email"
-            value={formData.email || ""}
-            onChange={handleChange}
-            className={errors.email ? "error-input" : ""}
-          />
-          {errors.email && (
-            <span className="validation-error">{errors.email}</span>
-          )}
-        </div>
-
-        <div>
-          <input
-            name="clinic"
-            placeholder="Clinic"
-            value={formData.clinic || ""}
-            onChange={handleChange}
-            className={errors.clinic ? "error-input" : ""}
-          />
-          {errors.clinic && (
-            <span className="validation-error">{errors.clinic}</span>
-          )}
-        </div>
-
-        <div>
-          <input
-            name="role"
-            placeholder="Role"
-            value={formData.role || ""}
-            onChange={handleChange}
-            className={errors.role ? "error-input" : ""}
-          />
-          {errors.role && (
-            <span className="validation-error">{errors.role}</span>
-          )}
-        </div>
-
-        <select
-          name="status"
-          value={formData.status || ""}
-          onChange={handleChange}
+        <form
+          className="admins-form"
+          onSubmit={handleUpdate}
         >
-          <option value="Active">Active</option>
-          <option value="Inactive">Inactive</option>
-        </select>
+
+          <div className="admins-form-group">
+
+            <label>Name</label>
+
+            <input
+              type="text"
+              name="name"
+              value={formData.name || ""}
+              onChange={handleChange}
+            />
+
+          </div>
+
+          <div className="admins-form-group">
+
+            <label>Email</label>
+
+            <input
+              type="email"
+              name="email"
+              value={formData.email || ""}
+              onChange={handleChange}
+            />
+
+          </div>
+
+          <div className="admins-grid">
+
+            <div className="admins-form-group">
+
+              <label>Clinic</label>
+
+              <input
+                type="text"
+                name="clinic"
+                value={formData.clinic || ""}
+                onChange={handleChange}
+              />
+
+            </div>
+
+            <div className="admins-form-group">
+
+              <label>Role</label>
+
+              <input
+                type="text"
+                name="role"
+                value={formData.role || ""}
+                onChange={handleChange}
+              />
+
+            </div>
+
+          </div>
+
+          <div className="admins-form-group">
+
+            <label>Status</label>
+
+            <select
+              name="status"
+              value={formData.status || ""}
+              onChange={handleChange}
+            >
+              <option value="Active">Active</option>
+              <option value="Inactive">Inactive</option>
+            </select>
+
+          </div>
+
+          <div className="admins-btn-group">
+
+            <button
+              type="submit"
+              className="admins-primary-btn"
+            >
+              Update Admin
+            </button>
+
+            <button
+              type="button"
+              className="admins-secondary-btn"
+              onClick={() => navigate("/admins")}
+            >
+              Cancel
+            </button>
+
+          </div>
+
+        </form>
 
       </div>
-
-      <button className="activate-btn" onClick={handleUpdate}>
-        Update
-      </button>
 
     </div>
   );

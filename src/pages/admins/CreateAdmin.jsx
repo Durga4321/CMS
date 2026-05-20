@@ -1,11 +1,17 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+
 import "../../styles/admin.css";
+
 import api from "../../services/api";
+
 import { ToastContainer, toast } from "react-toastify";
+
 import "react-toastify/dist/ReactToastify.css";
 
 function CreateAdmin() {
+
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     name: "",
@@ -17,8 +23,6 @@ function CreateAdmin() {
 
   const [errors, setErrors] = useState({});
 
-  const navigate = useNavigate();
-
   const emailRegex =
     /^[a-zA-Z0-9._%+-]+@(gmail\.com|yahoo\.com|outlook\.com|hotmail\.com)$/;
 
@@ -28,18 +32,7 @@ function CreateAdmin() {
 
     let updatedValue = value;
 
-    // Name validation
-    if (name === "name") {
-      updatedValue = value.replace(/[^A-Za-z\s]/g, "");
-    }
-
-    // Clinic validation
-    if (name === "clinic") {
-      updatedValue = value.replace(/[^A-Za-z\s]/g, "");
-    }
-
-    // Role validation
-    if (name === "role") {
+    if (name === "name" || name === "clinic" || name === "role") {
       updatedValue = value.replace(/[^A-Za-z\s]/g, "");
     }
 
@@ -60,14 +53,13 @@ function CreateAdmin() {
     if (!formData.email.trim()) {
       newErrors.email = "Email is required";
     } else if (!emailRegex.test(formData.email)) {
-      newErrors.email =
-        "Only gmail.com, yahoo.com, outlook.com, hotmail.com emails allowed";
+      newErrors.email = "Enter valid email";
     }
 
     if (!formData.password.trim()) {
       newErrors.password = "Password is required";
     } else if (formData.password.length < 6) {
-      newErrors.password = "Password must be minimum 6 characters";
+      newErrors.password = "Minimum 6 characters required";
     }
 
     if (!formData.clinic.trim()) {
@@ -88,7 +80,9 @@ function CreateAdmin() {
     e.preventDefault();
 
     if (!validateForm()) {
+
       toast.error("Please fix validation errors");
+
       return;
     }
 
@@ -104,92 +98,165 @@ function CreateAdmin() {
 
     } catch (err) {
 
-      console.error("Error creating admin:", err);
+      console.error(err);
 
       toast.error("Failed to create admin");
     }
   };
 
   return (
-    <div className="super-box">
+
+    <div className="admins-form-container">
 
       <ToastContainer position="top-right" autoClose={2000} />
 
-      <h2>Create Admin</h2>
+      <div className="admins-form-card">
 
-      <form className="form-grid" onSubmit={handleSubmit}>
+        <div className="admins-form-header">
 
-        <div>
-          <input
-            name="name"
-            placeholder="Name"
-            value={formData.name}
-            onChange={handleChange}
-            className={errors.name ? "error-input" : ""}
-          />
-          {errors.name && (
-            <span className="validation-error">{errors.name}</span>
-          )}
+          <h2>Create Admin</h2>
+
+          <p>Add new administrator details</p>
+
         </div>
 
-        <div>
-          <input
-            name="email"
-            placeholder="Email"
-            value={formData.email}
-            onChange={handleChange}
-            className={errors.email ? "error-input" : ""}
-          />
-          {errors.email && (
-            <span className="validation-error">{errors.email}</span>
-          )}
-        </div>
+        <form
+          className="admins-form"
+          onSubmit={handleSubmit}
+        >
 
-        <div>
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            value={formData.password}
-            onChange={handleChange}
-            className={errors.password ? "error-input" : ""}
-          />
-          {errors.password && (
-            <span className="validation-error">{errors.password}</span>
-          )}
-        </div>
+          <div className="admins-form-group">
 
-        <div>
-          <input
-            name="clinic"
-            placeholder="Clinic"
-            value={formData.clinic}
-            onChange={handleChange}
-            className={errors.clinic ? "error-input" : ""}
-          />
-          {errors.clinic && (
-            <span className="validation-error">{errors.clinic}</span>
-          )}
-        </div>
+            <label>Full Name</label>
 
-        <div>
-          <input
-            name="role"
-            placeholder="Role"
-            value={formData.role}
-            onChange={handleChange}
-            className={errors.role ? "error-input" : ""}
-          />
-          {errors.role && (
-            <span className="validation-error">{errors.role}</span>
-          )}
-        </div>
+            <input
+              type="text"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              placeholder="Enter full name"
+              className={errors.name ? "admins-input-error" : ""}
+            />
 
-        <button className="activate-btn" type="submit">
-          Save
-        </button>
+            {errors.name && (
+              <span className="admins-error-text">
+                {errors.name}
+              </span>
+            )}
 
-      </form>
+          </div>
+
+          <div className="admins-form-group">
+
+            <label>Email Address</label>
+
+            <input
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              placeholder="Enter email address"
+              className={errors.email ? "admins-input-error" : ""}
+            />
+
+            {errors.email && (
+              <span className="admins-error-text">
+                {errors.email}
+              </span>
+            )}
+
+          </div>
+
+          <div className="admins-grid">
+
+            <div className="admins-form-group">
+
+              <label>Password</label>
+
+              <input
+                type="password"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                placeholder="Enter password"
+                className={errors.password ? "admins-input-error" : ""}
+              />
+
+              {errors.password && (
+                <span className="admins-error-text">
+                  {errors.password}
+                </span>
+              )}
+
+            </div>
+
+            <div className="admins-form-group">
+
+              <label>Clinic</label>
+
+              <input
+                type="text"
+                name="clinic"
+                value={formData.clinic}
+                onChange={handleChange}
+                placeholder="Enter clinic"
+                className={errors.clinic ? "admins-input-error" : ""}
+              />
+
+              {errors.clinic && (
+                <span className="admins-error-text">
+                  {errors.clinic}
+                </span>
+              )}
+
+            </div>
+
+          </div>
+
+          <div className="admins-form-group">
+
+            <label>Role</label>
+
+            <input
+              type="text"
+              name="role"
+              value={formData.role}
+              onChange={handleChange}
+              placeholder="Enter role"
+              className={errors.role ? "admins-input-error" : ""}
+            />
+
+            {errors.role && (
+              <span className="admins-error-text">
+                {errors.role}
+              </span>
+            )}
+
+          </div>
+
+          <div className="admins-btn-group">
+
+            <button
+              type="submit"
+              className="admins-primary-btn"
+            >
+              Save Admin
+            </button>
+
+            <button
+              type="button"
+              className="admins-secondary-btn"
+              onClick={() => navigate("/admins")}
+            >
+              Cancel
+            </button>
+
+          </div>
+
+        </form>
+
+      </div>
+
     </div>
   );
 }

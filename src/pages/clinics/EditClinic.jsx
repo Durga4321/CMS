@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import api from "../../services/api";
 import "../../styles/Clinic.css";
+import api from "../../services/api";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -21,13 +21,10 @@ function EditClinic() {
 
   const [errors, setErrors] = useState({});
 
-  const emailRegex =
-    /^[a-zA-Z0-9._%+-]+@(gmail\.com|yahoo\.com|outlook\.com|hotmail\.com)$/;
-
   useEffect(() => {
 
     api.clinics.get(id)
-      .then(res => {
+      .then((res) => {
 
         setForm({
           name: res.name,
@@ -38,7 +35,7 @@ function EditClinic() {
         });
 
       })
-      .catch(err => console.error("Fetch error:", err));
+      .catch(err => console.error(err));
 
   }, [id]);
 
@@ -46,64 +43,15 @@ function EditClinic() {
 
     const { name, value } = e.target;
 
-    let updatedValue = value;
-
-    if (name === "name") {
-      updatedValue = value.replace(/[^A-Za-z\s]/g, "");
-    }
-
-    if (name === "contact") {
-      updatedValue = value.replace(/\D/g, "").slice(0, 10);
-    }
-
     setForm({
       ...form,
-      [name]: updatedValue
+      [name]: value
     });
-  };
-
-  const validateForm = () => {
-
-    const newErrors = {};
-
-    if (!form.name.trim()) {
-      newErrors.name = "Clinic name is required";
-    } else if (!/^[A-Za-z\s]+$/.test(form.name)) {
-      newErrors.name = "Only alphabets are allowed";
-    }
-
-    if (!form.address.trim()) {
-      newErrors.address = "Address is required";
-    } else if (!/india/i.test(form.address)) {
-      newErrors.address = "Enter valid Indian address format (Area, City, State, India)";
-    }
-
-    if (!form.contact.trim()) {
-      newErrors.contact = "Contact number is required";
-    } else if (!/^\d{10}$/.test(form.contact)) {
-      newErrors.contact = "Contact number must be 10 digits";
-    }
-
-    if (!form.email.trim()) {
-      newErrors.email = "Email is required";
-    } else if (!emailRegex.test(form.email)) {
-      newErrors.email =
-        "In correct format";
-    }
-
-    setErrors(newErrors);
-
-    return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = async (e) => {
 
     e.preventDefault();
-
-    if (!validateForm()) {
-      toast.error("Please fix validation errors");
-      return;
-    }
 
     try {
 
@@ -117,71 +65,107 @@ function EditClinic() {
 
     } catch (err) {
 
-      console.error("Update error:", err);
+      console.error(err);
 
       toast.error("Failed to update clinic");
     }
   };
 
   return (
-    <div className="clinic-container centered">
+    <div className="clinic-container clinic-centered">
 
       <ToastContainer position="top-right" autoClose={2000} />
 
-      <form className="clinic-form" onSubmit={handleSubmit}>
+      <div className="clinic-card">
 
-        <h2>Edit Clinic</h2>
+        <form className="clinic-form" onSubmit={handleSubmit}>
 
-        <input
-          type="text"
-          name="name"
-          placeholder="Clinic Name"
-          value={form.name || ""}
-          onChange={handleChange}
-        />
-        {errors.name && <span className="clinic-error">{errors.name}</span>}
+          <div className="clinic-header">
+            <h2>Edit Clinic</h2>
+            <p>Update clinic information</p>
+          </div>
 
-        <input
-          type="text"
-          name="address"
-          placeholder="Address(Area, City, State, India)"
-          value={form.address || ""}
-          onChange={handleChange}
-        />
-        {errors.address && <span className="clinic-error">{errors.address}</span>}
+          <div className="clinic-form-group">
+            <label>Clinic Name</label>
 
-        <input
-          type="text"
-          name="contact"
-          placeholder="Contact Number"
-          value={form.contact || ""}
-          onChange={handleChange}
-        />
-        {errors.contact && <span className="clinic-error">{errors.contact}</span>}
+            <input
+              type="text"
+              name="name"
+              value={form.name}
+              onChange={handleChange}
+            />
+          </div>
 
-        <input
-          type="email"
-          name="email"
-          placeholder="Email Address"
-          value={form.email || ""}
-          onChange={handleChange}
-        />
-        {errors.email && <span className="clinic-error">{errors.email}</span>}
+          <div className="clinic-form-group">
+            <label>Address</label>
 
-        <select
-          name="status"
-          value={form.status || ""}
-          onChange={handleChange}
-        >
-          <option value="Active">Active</option>
-          <option value="Inactive">Inactive</option>
-        </select>
+            <input
+              type="text"
+              name="address"
+              value={form.address}
+              onChange={handleChange}
+            />
+          </div>
 
-        <button type="submit">
-          Update
-        </button>
+          <div className="clinic-grid">
 
-      </form>
+            <div className="clinic-form-group">
+              <label>Contact Number</label>
+
+              <input
+                type="text"
+                name="contact"
+                value={form.contact}
+                onChange={handleChange}
+              />
+            </div>
+
+            <div className="clinic-form-group">
+              <label>Status</label>
+
+              <select
+                name="status"
+                value={form.status}
+                onChange={handleChange}
+              >
+                <option value="Active">Active</option>
+                <option value="Inactive">Inactive</option>
+              </select>
+            </div>
+
+          </div>
+
+          <div className="clinic-form-group">
+            <label>Email Address</label>
+
+            <input
+              type="email"
+              name="email"
+              value={form.email}
+              onChange={handleChange}
+            />
+          </div>
+
+          <div className="clinic-btn-group">
+
+            <button type="submit" className="clinic-primary-btn">
+              Update Clinic
+            </button>
+
+            <button
+              type="button"
+              className="clinic-secondary-btn"
+              onClick={() => navigate("/clinics")}
+            >
+              Cancel
+            </button>
+
+          </div>
+
+        </form>
+
+      </div>
+
     </div>
   );
 }

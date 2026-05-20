@@ -8,6 +8,8 @@ import {
   FaCog,
   FaChartBar,
   FaBell,
+  FaBriefcaseMedical,
+  FaBars,
   FaFileAlt,
   FaChevronDown,
   FaUserPlus,
@@ -17,38 +19,55 @@ import {
 
 import "../styles/Sidebar.css";
 
-function Sidebar() {
+function Sidebar({ isCollapsed = false, onToggleCollapse }) {
   const [openMenu, setOpenMenu] = useState(null);
   const role = localStorage.getItem("role"); // stored after login
 
   const toggleMenu = (menuName) => {
+    if (isCollapsed) {
+      setOpenMenu(null);
+      return;
+    }
     setOpenMenu(openMenu === menuName ? null : menuName);
   };
 
   return (
-    <div className="sidebar">
-      <h2 className="logo">CMS</h2>
+    <div className={`sidebar ${isCollapsed ? "sidebar-collapsed" : ""}`}>
+      <div className="sidebar-brand">
+        <div className="logo">
+          <FaBriefcaseMedical className="logo-icon" />
+          <span className="sidebar-label">CMS</span>
+        </div>
+        <button
+          type="button"
+          className="sidebar-toggle"
+          onClick={onToggleCollapse}
+          aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+          title={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+        >
+          <FaBars />
+        </button>
+      </div>
       <ul>
         {/* SUPER ADMIN SIDEBAR */}
         {role === "SuperAdmin" && (
           <>
             <li>
               <NavLink to="/super-admin-dashboard">
-                <FaTachometerAlt /> Dashboard
+                <FaTachometerAlt /> <span className="sidebar-label">Dashboard</span>
               </NavLink>
             </li>
 
             {/* Clinics */}
             <li>
               <div className="menu-title" onClick={() => toggleMenu("clinics")}>
-                <FaHospital /> Clinics <FaChevronDown />
+                <span><FaHospital /> <span className="sidebar-label">Clinics</span></span>
+                <FaChevronDown className="sidebar-chevron" />
               </div>
               {openMenu === "clinics" && (
                 <ul className="submenu" onClick={(e) => e.stopPropagation()}>
                   <li><NavLink to="/clinics">Clinic List</NavLink></li>
                   <li><NavLink to="/add-clinic">Add Clinic</NavLink></li>
-                  <li><NavLink to="/edit-clinic/1">Edit Clinic</NavLink></li>
-                  <li><NavLink to="/view-clinic/1">View Clinic</NavLink></li>
                 </ul>
               )}
             </li>
@@ -56,7 +75,8 @@ function Sidebar() {
             {/* Admins */}
             <li>
               <div className="menu-title" onClick={() => toggleMenu("admins")}>
-                <FaUsers /> Admin <FaChevronDown />
+                <span><FaUsers /> <span className="sidebar-label">Admin</span></span>
+                <FaChevronDown className="sidebar-chevron" />
               </div>
               {openMenu === "admins" && (
                 <ul className="submenu" onClick={(e) => e.stopPropagation()}>
@@ -71,7 +91,8 @@ function Sidebar() {
             {/* Users */}
             <li>
               <div className="menu-title" onClick={() => toggleMenu("users")}>
-                <FaUsers /> Users <FaChevronDown />
+                <span><FaUsers /> <span className="sidebar-label">Users</span></span>
+                <FaChevronDown className="sidebar-chevron" />
               </div>
               {openMenu === "users" && (
                 <ul className="submenu" onClick={(e) => e.stopPropagation()}>
@@ -85,7 +106,8 @@ function Sidebar() {
             {/* Roles */}
             <li>
               <div className="menu-title" onClick={() => toggleMenu("roles")}>
-                <FaUserShield /> Roles <FaChevronDown />
+                <span><FaUserShield /> <span className="sidebar-label">Roles</span></span>
+                <FaChevronDown className="sidebar-chevron" />
               </div>
               {openMenu === "roles" && (
                 <ul className="submenu" onClick={(e) => e.stopPropagation()}>
@@ -99,7 +121,8 @@ function Sidebar() {
             {/* Reports */}
             <li>
               <div className="menu-title" onClick={() => toggleMenu("reports")}>
-                <FaChartBar /> Reports <FaChevronDown />
+                <span><FaChartBar /> <span className="sidebar-label">Reports</span></span>
+                <FaChevronDown className="sidebar-chevron" />
               </div>
               {openMenu === "reports" && (
                 <ul className="submenu" onClick={(e) => e.stopPropagation()}>
@@ -113,7 +136,8 @@ function Sidebar() {
             {/* Settings */}
             <li>
               <div className="menu-title" onClick={() => toggleMenu("settings")}>
-                <FaCog /> Settings <FaChevronDown />
+                <span><FaCog /> <span className="sidebar-label">Settings</span></span>
+                <FaChevronDown className="sidebar-chevron" />
               </div>
               {openMenu === "settings" && (
                 <ul className="submenu" onClick={(e) => e.stopPropagation()}>
@@ -128,7 +152,8 @@ function Sidebar() {
             {/* Logs */}
             <li>
               <div className="menu-title" onClick={() => toggleMenu("logs")}>
-                <FaFileAlt /> Logs <FaChevronDown />
+                <span><FaFileAlt /> <span className="sidebar-label">Logs</span></span>
+                <FaChevronDown className="sidebar-chevron" />
               </div>
               {openMenu === "logs" && (
                 <ul className="submenu" onClick={(e) => e.stopPropagation()}>
@@ -141,7 +166,8 @@ function Sidebar() {
             {/* Notifications */}
             <li>
               <div className="menu-title" onClick={() => toggleMenu("notifications")}>
-                <FaBell /> Notifications <FaChevronDown />
+                <span><FaBell /> <span className="sidebar-label">Notifications</span></span>
+                <FaChevronDown className="sidebar-chevron" />
               </div>
               {openMenu === "notifications" && (
                 <ul className="submenu" onClick={(e) => e.stopPropagation()}>
@@ -158,14 +184,15 @@ function Sidebar() {
           <>
             <li>
               <NavLink to="/receptionist-dashboard">
-                <FaTachometerAlt /> Dashboard
+                <FaTachometerAlt /> <span className="sidebar-label">Dashboard</span>
               </NavLink>
             </li>
 
             {/* Patients */}
             <li>
               <div className="menu-title" onClick={() => toggleMenu("patients")}>
-                <FaUserPlus /> Patients <FaChevronDown />
+                <span><FaUserPlus /> <span className="sidebar-label">Patients</span></span>
+                <FaChevronDown className="sidebar-chevron" />
               </div>
               {openMenu === "patients" && (
                 <ul className="submenu" onClick={(e) => e.stopPropagation()}>
@@ -180,7 +207,8 @@ function Sidebar() {
             {/* Appointments */}
             <li>
               <div className="menu-title" onClick={() => toggleMenu("appointments")}>
-                <FaCalendarCheck /> Appointments <FaChevronDown />
+                <span><FaCalendarCheck /> <span className="sidebar-label">Appointments</span></span>
+                <FaChevronDown className="sidebar-chevron" />
               </div>
               {openMenu === "appointments" && (
                 <ul className="submenu" onClick={(e) => e.stopPropagation()}>
@@ -196,7 +224,8 @@ function Sidebar() {
             {/* Billing */}
             <li>
               <div className="menu-title" onClick={() => toggleMenu("billing")}>
-                <FaFileInvoice /> Billing <FaChevronDown />
+                <span><FaFileInvoice /> <span className="sidebar-label">Billing</span></span>
+                <FaChevronDown className="sidebar-chevron" />
               </div>
               {openMenu === "billing" && (
                 <ul className="submenu" onClick={(e) => e.stopPropagation()}>
@@ -211,7 +240,8 @@ function Sidebar() {
             {/* Reports */}
             <li>
               <div className="menu-title" onClick={() => toggleMenu("reports")}>
-                <FaChartBar /> Reports <FaChevronDown />
+                <span><FaChartBar /> <span className="sidebar-label">Reports</span></span>
+                <FaChevronDown className="sidebar-chevron" />
               </div>
               {openMenu === "reports" && (
                 <ul className="submenu" onClick={(e) => e.stopPropagation()}>

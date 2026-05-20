@@ -1,7 +1,8 @@
 import { Navigate, Outlet } from "react-router-dom";
+import { getAuthToken } from "../services/api";
 
 const ProtectedRoute = ({ allowedRoles }) => {
-  const token = localStorage.getItem("authToken");
+  const token = localStorage.getItem("authToken") || getAuthToken();
   const role = localStorage.getItem("role");
 
   if (!token) {

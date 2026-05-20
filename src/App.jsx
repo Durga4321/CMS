@@ -4,6 +4,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 import ProtectedRoute from "./routes/ProtectedRoute";
 import MainLayout from "./layout/MainLayout";
+import { getAuthToken } from "./services/api";
 
 import Home from "./components/Home";
 import Login from "./pages/auth/Login";
@@ -77,12 +78,25 @@ import PaymentHistory from "./pages/receptionist/PaymentHistory";
 
 import ReceptionistReports from "./pages/receptionist/ReceptionistReports";
 
+const getDashboardPath = (role) => {
+  if (role === "SuperAdmin") return "/super-admin-dashboard";
+  if (role === "Receptionist") return "/receptionist-dashboard";
+  return "/home";
+};
+
+const DefaultRedirect = () => {
+  const token = localStorage.getItem("authToken") || getAuthToken();
+  const role = localStorage.getItem("role");
+
+  return <Navigate to={token ? getDashboardPath(role) : "/login"} replace />;
+};
+
 function App() {
   return (
     <BrowserRouter>
       <Routes>
         {/* Default Redirect */}
-        <Route path="/" element={<Navigate to="/login" />} />
+        <Route path="/" element={<DefaultRedirect />} />
 
         {/* Public Routes */}
         <Route path="/login" element={<Login />} />
@@ -164,7 +178,7 @@ function App() {
         </Route>
 
         {/* Fallback */}
-        <Route path="*" element={<Navigate to="/login" />} />
+        <Route path="*" element={<DefaultRedirect />} />
       </Routes>
 
       {/* ✅ Toast Container (Global) */}
